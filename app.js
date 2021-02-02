@@ -6,9 +6,9 @@ app.get('/', (req, res) => {
   res.send(`
   <h1>buri</h1>
   <ul>
-  <li>すごい</li>
-  <li>あとで</li>
-  <li>グッド</li>
+    <li>すごい</li>
+    <li>あとで</li>
+    <li>グッド</li>
   </ul>
   `)
 })
