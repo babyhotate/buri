@@ -46,6 +46,19 @@ app.get('/home', (req, res) => {
   res.redirect('/');
 });
 
+app.get('/kuji', (req, res) => {
+  let box = ["shellzu 🍣", "nakanoh 👤", "inukawaii 🐶", "aksh-t 🫀"];
+  const result_list = [];
+  while (box.length) {
+    const index = Math.floor(Math.random() * box.length);
+    result_list.push(box[index]);
+    box = box.filter(x => x !== box[index]);
+  }
+  res.send(`<html style="background: black; font-size: xx-large; color: wheat;">
+  <ol>${result_list.map(x => "<li>" + x + "</li>").join("\n")}</ol>
+  </html>`);
+});
+
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });
