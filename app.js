@@ -13,7 +13,9 @@ app.get('/', (req, res) => {
   let posts = fs.readFileSync(POSTS_FILE_PATH, 'utf-8');
   const postList = posts.split('\n').filter(value => value !== "");
   // ["", "aaa", ""] => ["aaa"] 
-  const liTags = postList.map(x => `<li>${x}</li>`);
+  const liTags = postList.map((x, i) => `<li>${x}:${i}</li><form action="/delete_post" method="get">
+  <input type="hidden" value=${i} id="post" name="post_id">
+  <input type="submit" value="廃棄"></form>`);
 
   // テキストに書き込む？
   res.send(`
@@ -39,6 +41,23 @@ app.get('/home', (req, res) => {
     console.log(e.message);
   }
   // /にリダイレクトする
+  res.redirect('/');
+});
+
+app.get('/delete_post', (req, res) => {
+  // 渡ってくるクエリパラメータは↓の形
+  // /delete_post?post_id=1
+
+  // 指定されたポストをposts.txtから削除する
+  //   ファイルを読み込む
+  //   リストから対象の投稿を削除する
+  //   ファイルにリストを書き込む
+  fs.writeFile(POSTS_FILE_PATH, "", function (err) {
+    if (err) { throw err; }
+    console.log('空で上書き');
+  });
+  console.log("/delete_postにたどり着いたよ！！");
+  // / にリダイレクトする
   res.redirect('/');
 });
 
