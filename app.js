@@ -11,13 +11,9 @@ app.get('/', (req, res) => {
     fs.writeFileSync(POSTS_FILE_PATH, "");
   }
   let posts = fs.readFileSync(POSTS_FILE_PATH, 'utf-8');
-  const postList = posts.split('\n');
-  const liTags = postList.map(x => {
-    if (x === "") {
-      return "";
-    }
-    return `<li>${x}</li>`;
-  });
+  const postList = posts.split('\n').filter(value => value !== "");
+  // ["", "aaa", ""] => ["aaa"] 
+  const liTags = postList.map(x => `<li>${x}</li>`);
 
   // テキストに書き込む？
   res.send(`
