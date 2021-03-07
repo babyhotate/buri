@@ -13,9 +13,20 @@ app.get('/', (req, res) => {
   let posts = fs.readFileSync(POSTS_FILE_PATH, 'utf-8');
   const postList = posts.split('\n').filter(value => value !== "");
   // ["", "aaa", ""] => ["aaa"] 
-  const liTags = postList.map((x, i) => `<li>${x}<form action="/delete_post" method="get">
-  <input type="hidden" value=${i} id="post" name="post_id">
-  <input type="submit" value="廃棄"></form></li>`);
+  const liTags = postList.map((x, i) => `
+    <li>
+      <form action="/delete_post" method="post">
+        <input type="hidden" value=${i} id="post" name="post_id">
+        <input type="submit" value="廃棄">
+      </form>
+      <form action="/edit_post" method="get">
+        <input type=text name="edit_content" value="${x}">
+        <input type="hidden" value=${i} name="post_id">
+        <input type="submit" value="解体">
+      </form>
+    </li>`
+  );
+  // TODO　編集ボタンを追加
 
   // テキストに書き込む？
   res.send(`
@@ -61,6 +72,20 @@ app.get('/delete_post', (req, res) => {
     if (err) { throw err; }
   });
   // / にリダイレクトする
+  res.redirect('/');
+});
+
+//　編集URL(/edit_post?post_id=1&edit_content=buri2)を設定
+app.get("/edit_post", (req, res) => {
+  const posts = fs.readFileSync(POSTS_FILE_PATH, 'utf-8');
+  const postList = posts.split('\n').filter(value => value !== "");
+
+  postList[req.query.post_id] = req.query.edit_content;
+  
+  fs.writeFile(POSTS_FILE_PATH, postList.join("\n") + "\n", function (err) {
+    if (err) { throw err; }
+  });
+  
   res.redirect('/');
 });
 
