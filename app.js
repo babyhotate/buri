@@ -58,20 +58,15 @@ app.get('/delete_post', (req, res) => {
   // 渡ってくるクエリパラメータは↓の形
   // /delete_post?post_id=1
 
-  // 指定されたポストをposts.txtから削除する
-  //   ファイルを読み込む
   let posts = fs.readFileSync(POSTS_FILE_PATH, 'utf-8');
   const postList = posts.split('\n').filter(value => value !== "");
-  //   リストから対象の投稿を削除する
-  //     - 削除対象のIDを取得する
-  const targetId = req.query.post_id;
-  //     - 削除対象のIDに合致する投稿をリストから削除する
-  postList.splice(targetId, 1);
-  //   ファイルにリストを書き込む
+
+  postList.splice(req.query.post_id, 1);
+
   fs.writeFile(POSTS_FILE_PATH, postList.join("\n") + "\n", function (err) {
     if (err) { throw err; }
   });
-  // / にリダイレクトする
+
   res.redirect('/');
 });
 
