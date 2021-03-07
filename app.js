@@ -13,9 +13,9 @@ app.get('/', (req, res) => {
   let posts = fs.readFileSync(POSTS_FILE_PATH, 'utf-8');
   const postList = posts.split('\n').filter(value => value !== "");
   // ["", "aaa", ""] => ["aaa"] 
-  const liTags = postList.map((x, i) => `<li>${x}</li><form action="/delete_post" method="get">
+  const liTags = postList.map((x, i) => `<li>${x}<form action="/delete_post" method="get">
   <input type="hidden" value=${i} id="post" name="post_id">
-  <input type="submit" value="廃棄"></form>`);
+  <input type="submit" value="廃棄"></form></li>`);
 
   // テキストに書き込む？
   res.send(`
