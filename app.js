@@ -15,7 +15,7 @@ app.get('/', (req, res) => {
   // ["", "aaa", ""] => ["aaa"] 
   const liTags = postList.map((x, i) => `
     <li>
-      <form action="/delete_post" method="post">
+      <form action="/delete_post" method="get">
         <input type="hidden" value=${i} id="post" name="post_id">
         <input type="submit" value="廃棄">
       </form>
@@ -76,11 +76,11 @@ app.get("/edit_post", (req, res) => {
   const postList = posts.split('\n').filter(value => value !== "");
 
   postList[req.query.post_id] = req.query.edit_content;
-  
+
   fs.writeFile(POSTS_FILE_PATH, postList.join("\n") + "\n", function (err) {
     if (err) { throw err; }
   });
-  
+
   res.redirect('/');
 });
 
