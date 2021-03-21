@@ -6,13 +6,48 @@ const port = 3000;
 
 const POSTS_FILE_PATH = 'data/posts.txt';
 
-app.get('/', (req, res) => {
+function getPosts() {
   if (!fs.existsSync(POSTS_FILE_PATH)) {
     fs.writeFileSync(POSTS_FILE_PATH, "");
   }
   let posts = fs.readFileSync(POSTS_FILE_PATH, 'utf-8');
-  const postList = posts.split('\n').filter(value => value !== "");
+
   // ["", "aaa", ""] => ["aaa"] 
+  const postList = posts.split('\n').filter(value => value !== "");
+  
+  return postList;
+}
+
+function writePost(post) {
+  try {
+    fs.appendFileSync(POSTS_FILE_PATH, post + "\n");
+  }
+  catch (e) {
+    console.log(e.message);
+  }
+}
+
+function deletePost(postList, post_id) {
+  postList.splice(post_id, 1);
+
+  fs.writeFile(POSTS_FILE_PATH, postList.join("\n") + "\n", function (err) {
+    if (err) { throw err; }
+  });
+}
+
+function editPost(postList, post_id, edit_content) {
+  postList[post_id] = edit_content;
+
+  fs.writeFile(POSTS_FILE_PATH, postList.join("\n") + "\n", function (err) {
+    if (err) { throw err; }
+  });
+}
+
+/**
+ * ポストの一覧を表示する
+ */
+app.get('/', (req, res) => {
+  const postList = getPosts();
   const liTags = postList.map((x, i) => `
     <li>
       <form action="/delete_post" method="get">
@@ -26,9 +61,7 @@ app.get('/', (req, res) => {
       </form>
     </li>`
   );
-  // TODO　編集ボタンを追加
 
-  // テキストに書き込む？
   res.send(`
   <h1>buri</h1>
   <ul>
@@ -42,45 +75,33 @@ app.get('/', (req, res) => {
   `);
 });
 
+
+/**
+ * ポストを追加する
+ * e.g. /home?post=buri
+ */
 app.get('/home', (req, res) => {
-  // DBに書き込む
-  try {
-    fs.appendFileSync(POSTS_FILE_PATH, req.query.post + "\n");
-  }
-  catch (e) {
-    console.log(e.message);
-  }
-  // /にリダイレクトする
+  writePost(req.query.post);
   res.redirect('/');
 });
 
+/**
+ * ポストを削除する
+ * e.g. /delete_post?post_id=1
+ */
 app.get('/delete_post', (req, res) => {
-  // 渡ってくるクエリパラメータは↓の形
-  // /delete_post?post_id=1
-
-  let posts = fs.readFileSync(POSTS_FILE_PATH, 'utf-8');
-  const postList = posts.split('\n').filter(value => value !== "");
-
-  postList.splice(req.query.post_id, 1);
-
-  fs.writeFile(POSTS_FILE_PATH, postList.join("\n") + "\n", function (err) {
-    if (err) { throw err; }
-  });
-
+  const postList = getPosts();
+  deletePost(postList, req.query.post_id);
   res.redirect('/');
 });
 
-//　編集URL(/edit_post?post_id=1&edit_content=buri2)を設定
+/**
+ * ポストを編集する
+ * e.g. /edit_post?post_id=1&edit_content=buri2
+ */
 app.get("/edit_post", (req, res) => {
-  const posts = fs.readFileSync(POSTS_FILE_PATH, 'utf-8');
-  const postList = posts.split('\n').filter(value => value !== "");
-
-  postList[req.query.post_id] = req.query.edit_content;
-
-  fs.writeFile(POSTS_FILE_PATH, postList.join("\n") + "\n", function (err) {
-    if (err) { throw err; }
-  });
-
+  const postList = getPosts();
+  editPost(postList, req.query.post_id, req.query.edit_content);
   res.redirect('/');
 });
 
