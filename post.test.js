@@ -10,7 +10,7 @@ test('getPostsのテスト', () => {
     const beforePostsText = fs.readFileSync(POSTS_FILE_PATH);
 
     // posts.txtをテストしたい状態にする
-    fs.writeFileSync(POSTS_FILE_PATH, ["hoge", "fuga"].join("\n") + "\n");
+    fs.writeFileSync(POSTS_FILE_PATH, ["hoge", "fuga"].join("\n"));
 
     // テストする
     const posts = getPosts();
@@ -26,7 +26,7 @@ test('writePostのテスト', () => {
     // 事前にposts.txtの今の状態を取っておく
     const beforePostsText = fs.readFileSync(POSTS_FILE_PATH);
     // posts.txtをテストしたい状態にする
-    fs.writeFileSync(POSTS_FILE_PATH, ["hoge", "fuga"].join("\n") + "\n");
+    fs.writeFileSync(POSTS_FILE_PATH, ["hoge", "fuga"].join("\n"));
 
     // テストする
     writePost("piyo");
@@ -43,7 +43,7 @@ test('deletePostのテスト', () => {
     // 事前にposts.txtの今の状態を取っておく
     const beforePostsText = fs.readFileSync(POSTS_FILE_PATH);
     // posts.txtをテストしたい状態にする
-    fs.writeFileSync(POSTS_FILE_PATH, ["hoge", "fuga"].join("\n") + "\n");
+    fs.writeFileSync(POSTS_FILE_PATH, ["hoge", "fuga"].join("\n"));
 
     deletePost(1);
 
@@ -61,7 +61,7 @@ test('editPostのテスト', () => {
     // 事前にposts.txtの今の状態を取っておく
     const beforePostsText = fs.readFileSync(POSTS_FILE_PATH);
     // posts.txtをテストしたい状態にする
-    fs.writeFileSync(POSTS_FILE_PATH, ["hoge", "fuga"].join("\n") + "\n");
+    fs.writeFileSync(POSTS_FILE_PATH, ["hoge", "fuga"].join("\n"));
 
     editPost(1, 'fuga2');
 
