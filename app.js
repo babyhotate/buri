@@ -51,8 +51,7 @@ app.get('/home', (req, res) => {
  * e.g. /delete_post?post_id=1
  */
 app.get('/delete_post', (req, res) => {
-  const postList = post.getPosts();
-  post.deletePost(postList, req.query.post_id);
+  post.deletePost(req.query.post_id);
   res.redirect('/');
 });
 
@@ -61,8 +60,7 @@ app.get('/delete_post', (req, res) => {
  * e.g. /edit_post?post_id=1&edit_content=buri2
  */
 app.get("/edit_post", (req, res) => {
-  const postList = post.getPosts();
-  post.editPost(postList, req.query.post_id, req.query.edit_content);
+  post.editPost(req.query.post_id, req.query.edit_content);
   res.redirect('/');
 });
 
