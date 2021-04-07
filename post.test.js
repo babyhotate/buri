@@ -10,7 +10,7 @@ test('getPostsのテスト', () => {
     const beforePostsText = fs.readFileSync(POSTS_FILE_PATH);
 
     // posts.txtをテストしたい状態にする
-    fs.writeFileSync(POSTS_FILE_PATH, ["hoge", "fuga"].join("\n") + "\n");
+    fs.writeFileSync(POSTS_FILE_PATH, ["hoge", "fuga"].join("\n"));
 
     // テストする
     const posts = getPosts();
@@ -26,12 +26,12 @@ test('writePostのテスト', () => {
     // 事前にposts.txtの今の状態を取っておく
     const beforePostsText = fs.readFileSync(POSTS_FILE_PATH);
     // posts.txtをテストしたい状態にする
-    fs.writeFileSync(POSTS_FILE_PATH, ["hoge", "fuga"].join("\n") + "\n");
+    fs.writeFileSync(POSTS_FILE_PATH, ["hoge", "fuga"].join("\n"));
 
     // テストする
     writePost("piyo");
     let posts = fs.readFileSync(POSTS_FILE_PATH, 'utf-8');
-    posts = posts.split("\n").filter(value => value !== "");
+    posts = posts.split("\n");
 
     expect(posts[posts.length - 1]).toBe("piyo");
 
@@ -43,12 +43,12 @@ test('deletePostのテスト', () => {
     // 事前にposts.txtの今の状態を取っておく
     const beforePostsText = fs.readFileSync(POSTS_FILE_PATH);
     // posts.txtをテストしたい状態にする
-    fs.writeFileSync(POSTS_FILE_PATH, ["hoge", "fuga"].join("\n") + "\n");
+    fs.writeFileSync(POSTS_FILE_PATH, ["hoge", "fuga"].join("\n"));
 
     deletePost(1);
 
     let posts = fs.readFileSync(POSTS_FILE_PATH, 'utf-8');
-    posts = posts.split("\n").filter(value => value !== "");
+    posts = posts.split("\n");
 
     expect(posts).not.toContain('fuga');
     expect(posts).toContain('hoge');
@@ -61,12 +61,12 @@ test('editPostのテスト', () => {
     // 事前にposts.txtの今の状態を取っておく
     const beforePostsText = fs.readFileSync(POSTS_FILE_PATH);
     // posts.txtをテストしたい状態にする
-    fs.writeFileSync(POSTS_FILE_PATH, ["hoge", "fuga"].join("\n") + "\n");
+    fs.writeFileSync(POSTS_FILE_PATH, ["hoge", "fuga"].join("\n"));
 
     editPost(1, 'fuga2');
 
     let posts = fs.readFileSync(POSTS_FILE_PATH, 'utf-8');
-    posts = posts.split("\n").filter(value => value !== "");
+    posts = posts.split("\n");
 
     expect(posts[1]).toBe("fuga2");
 
