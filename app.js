@@ -1,53 +1,14 @@
-const fs = require('fs');
+const post = require('./post');
 
 const express = require('express');
 const app = express();
 const port = 3000;
 
-const POSTS_FILE_PATH = 'data/posts.txt';
-
-function getPosts() {
-  if (!fs.existsSync(POSTS_FILE_PATH)) {
-    fs.writeFileSync(POSTS_FILE_PATH, "");
-  }
-  let posts = fs.readFileSync(POSTS_FILE_PATH, 'utf-8');
-
-  // ["", "aaa", ""] => ["aaa"] 
-  const postList = posts.split('\n').filter(value => value !== "");
-  
-  return postList;
-}
-
-function writePost(post) {
-  try {
-    fs.appendFileSync(POSTS_FILE_PATH, post + "\n");
-  }
-  catch (e) {
-    console.log(e.message);
-  }
-}
-
-function deletePost(postList, post_id) {
-  postList.splice(post_id, 1);
-
-  fs.writeFile(POSTS_FILE_PATH, postList.join("\n") + "\n", function (err) {
-    if (err) { throw err; }
-  });
-}
-
-function editPost(postList, post_id, edit_content) {
-  postList[post_id] = edit_content;
-
-  fs.writeFile(POSTS_FILE_PATH, postList.join("\n") + "\n", function (err) {
-    if (err) { throw err; }
-  });
-}
-
 /**
  * ポストの一覧を表示する
  */
 app.get('/', (req, res) => {
-  const postList = getPosts();
+  const postList = post.getPosts();
   const liTags = postList.map((x, i) => `
     <li>
       <form action="/delete_post" method="get">
@@ -81,7 +42,7 @@ app.get('/', (req, res) => {
  * e.g. /home?post=buri
  */
 app.get('/home', (req, res) => {
-  writePost(req.query.post);
+  post.writePost(req.query.post);
   res.redirect('/');
 });
 
@@ -90,8 +51,8 @@ app.get('/home', (req, res) => {
  * e.g. /delete_post?post_id=1
  */
 app.get('/delete_post', (req, res) => {
-  const postList = getPosts();
-  deletePost(postList, req.query.post_id);
+  const postList = post.getPosts();
+  post.deletePost(postList, req.query.post_id);
   res.redirect('/');
 });
 
@@ -100,8 +61,8 @@ app.get('/delete_post', (req, res) => {
  * e.g. /edit_post?post_id=1&edit_content=buri2
  */
 app.get("/edit_post", (req, res) => {
-  const postList = getPosts();
-  editPost(postList, req.query.post_id, req.query.edit_content);
+  const postList = post.getPosts();
+  post.editPost(postList, req.query.post_id, req.query.edit_content);
   res.redirect('/');
 });
 
