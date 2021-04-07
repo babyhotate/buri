@@ -45,8 +45,7 @@ test('deletePostのテスト', () => {
     // posts.txtをテストしたい状態にする
     fs.writeFileSync(POSTS_FILE_PATH, ["hoge", "fuga"].join("\n") + "\n");
 
-    const postList = ['hoge', 'fuga'];
-    deletePost(postList, 1);
+    deletePost(1);
 
     let posts = fs.readFileSync(POSTS_FILE_PATH, 'utf-8');
     posts = posts.split("\n").filter(value => value !== "");

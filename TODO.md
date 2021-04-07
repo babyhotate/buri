@@ -1,16 +1,4 @@
-# Jestを使ったテストを実装する #36
-- [x] テストに冪等性を持たせる
-  - 泥臭く頑張る
-
-- [x] writePostのテストを実装する
-
-- [x] deletePostを移植してテストを途中まで実装する
-- [x] deletePostのテストを実装する
-
-- [x] editPostを移植してテストを途中まで実装する
-- [x] editPostのテストを実装する
-
-- [x] app.jsからpost.jsを参照するように変更する
+# deletePostメソッドがpostListを引数にもらっているのが変 #44
 
 -----
 

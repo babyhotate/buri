@@ -23,10 +23,12 @@ function writePost(post) {
   }
 }
 
-function deletePost(postList, post_id) {
-  postList.splice(post_id, 1);
+// TODO: function deletePost(post_id)
+function deletePost(post_id) {
+  const apple = getPosts();
+  apple.splice(post_id, 1);
 
-  fs.writeFileSync(POSTS_FILE_PATH, postList.join("\n") + "\n", function (err) {
+  fs.writeFileSync(POSTS_FILE_PATH, apple.join("\n") + "\n", function (err) {
     if (err) { throw err; }
   });
 }

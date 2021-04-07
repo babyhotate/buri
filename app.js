@@ -51,8 +51,7 @@ app.get('/home', (req, res) => {
  * e.g. /delete_post?post_id=1
  */
 app.get('/delete_post', (req, res) => {
-  const postList = post.getPosts();
-  post.deletePost(postList, req.query.post_id);
+  post.deletePost(req.query.post_id);
   res.redirect('/');
 });
 
