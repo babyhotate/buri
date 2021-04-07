@@ -60,8 +60,7 @@ app.get('/delete_post', (req, res) => {
  * e.g. /edit_post?post_id=1&edit_content=buri2
  */
 app.get("/edit_post", (req, res) => {
-  const postList = post.getPosts();
-  post.editPost(postList, req.query.post_id, req.query.edit_content);
+  post.editPost(req.query.post_id, req.query.edit_content);
   res.redirect('/');
 });
 

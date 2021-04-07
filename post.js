@@ -33,7 +33,8 @@ function deletePost(post_id) {
   });
 }
 
-function editPost(postList, post_id, edit_content) {
+function editPost(post_id, edit_content) {
+  const postList = getPosts();
   postList[post_id] = edit_content;
 
   fs.writeFileSync(POSTS_FILE_PATH, postList.join("\n") + "\n", function (err) {

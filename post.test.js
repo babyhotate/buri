@@ -63,8 +63,7 @@ test('editPostのテスト', () => {
     // posts.txtをテストしたい状態にする
     fs.writeFileSync(POSTS_FILE_PATH, ["hoge", "fuga"].join("\n") + "\n");
 
-    const postList = ['hoge', 'fuga'];
-    editPost(postList, 1, 'fuga2');
+    editPost(1, 'fuga2');
 
     let posts = fs.readFileSync(POSTS_FILE_PATH, 'utf-8');
     posts = posts.split("\n").filter(value => value !== "");
