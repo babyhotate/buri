@@ -31,7 +31,7 @@ test('writePostのテスト', () => {
     // テストする
     writePost("piyo");
     let posts = fs.readFileSync(POSTS_FILE_PATH, 'utf-8');
-    posts = posts.split("\n").filter(value => value !== "");
+    posts = posts.split("\n");
 
     expect(posts[posts.length - 1]).toBe("piyo");
 
@@ -48,7 +48,7 @@ test('deletePostのテスト', () => {
     deletePost(1);
 
     let posts = fs.readFileSync(POSTS_FILE_PATH, 'utf-8');
-    posts = posts.split("\n").filter(value => value !== "");
+    posts = posts.split("\n");
 
     expect(posts).not.toContain('fuga');
     expect(posts).toContain('hoge');
@@ -66,7 +66,7 @@ test('editPostのテスト', () => {
     editPost(1, 'fuga2');
 
     let posts = fs.readFileSync(POSTS_FILE_PATH, 'utf-8');
-    posts = posts.split("\n").filter(value => value !== "");
+    posts = posts.split("\n");
 
     expect(posts[1]).toBe("fuga2");
 
