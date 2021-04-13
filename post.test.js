@@ -2,15 +2,16 @@
 const { Post } = require('./post');
 
 const fs = require("fs");
-const POSTS_FILE_PATH = 'test/data/posts.txt';
+const DATA_DIR_PATH = 'test/data';
+const POSTS_FILE_PATH = `${DATA_DIR_PATH}/posts.txt`;
 
 let post;
 
 beforeEach(() => {
-    post = new Post(POSTS_FILE_PATH);
+    post = new Post(DATA_DIR_PATH);
     // posts.txtをテストしたい状態にする
     fs.writeFileSync(POSTS_FILE_PATH, ["hoge", "fuga"].join("\n"));
-  });
+});
 
 
 test('getPostsのテスト', () => {
