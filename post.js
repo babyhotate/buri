@@ -1,8 +1,8 @@
 const fs = require('fs');
 
-class Post{
-  constructor(filePath){
-    this.filePath = filePath
+class Post {
+  constructor(dataDirPath) {
+    this.filePath = `${dataDirPath}/posts.txt`;
   }
 
   getPosts() {
