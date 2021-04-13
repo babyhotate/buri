@@ -1,11 +1,16 @@
 
-const { getPosts, writePost, deletePost, editPost } = require('./post');
+const { Post } = require('./post');
 
 const fs = require("fs");
-const POSTS_FILE_PATH = 'data/posts.txt';
+const POSTS_FILE_PATH = 'test/data/posts.txt';
 
+let post;
+function before() {
+    post = new Post('test/data/posts.txt')
+}
 
 test('getPostsのテスト', () => {
+    before();
     // 事前にposts.txtの今の状態を取っておく
     const beforePostsText = fs.readFileSync(POSTS_FILE_PATH);
 
@@ -13,7 +18,8 @@ test('getPostsのテスト', () => {
     fs.writeFileSync(POSTS_FILE_PATH, ["hoge", "fuga"].join("\n"));
 
     // テストする
-    const posts = getPosts();
+
+    const posts = post.getPosts();
     expect(posts.length).toBe(2);
     expect(posts[0]).toBe("hoge");
     expect(posts[1]).toBe("fuga");
@@ -23,13 +29,14 @@ test('getPostsのテスト', () => {
 });
 
 test('writePostのテスト', () => {
+    before();
     // 事前にposts.txtの今の状態を取っておく
     const beforePostsText = fs.readFileSync(POSTS_FILE_PATH);
     // posts.txtをテストしたい状態にする
     fs.writeFileSync(POSTS_FILE_PATH, ["hoge", "fuga"].join("\n"));
 
     // テストする
-    writePost("piyo");
+    post.writePost("piyo");
     let posts = fs.readFileSync(POSTS_FILE_PATH, 'utf-8');
     posts = posts.split("\n");
 
@@ -40,12 +47,13 @@ test('writePostのテスト', () => {
 });
 
 test('deletePostのテスト', () => {
+    before();
     // 事前にposts.txtの今の状態を取っておく
     const beforePostsText = fs.readFileSync(POSTS_FILE_PATH);
     // posts.txtをテストしたい状態にする
     fs.writeFileSync(POSTS_FILE_PATH, ["hoge", "fuga"].join("\n"));
 
-    deletePost(1);
+    post.deletePost(1);
 
     let posts = fs.readFileSync(POSTS_FILE_PATH, 'utf-8');
     posts = posts.split("\n");
@@ -58,12 +66,13 @@ test('deletePostのテスト', () => {
 });
 
 test('editPostのテスト', () => {
+    before();
     // 事前にposts.txtの今の状態を取っておく
     const beforePostsText = fs.readFileSync(POSTS_FILE_PATH);
     // posts.txtをテストしたい状態にする
     fs.writeFileSync(POSTS_FILE_PATH, ["hoge", "fuga"].join("\n"));
 
-    editPost(1, 'fuga2');
+    post.editPost(1, 'fuga2');
 
     let posts = fs.readFileSync(POSTS_FILE_PATH, 'utf-8');
     posts = posts.split("\n");
