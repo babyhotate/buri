@@ -21,7 +21,7 @@ app.get('/', (req, res) => {
       <form action="/edit_post" method="get">
         <input type=text name="edit_content" value="${x}">
         <input type="hidden" value=${i} name="post_id">
-        <input type="submit" value="解体">
+        <input type="submit" value="加工">
       </form>
     </li>`
   );
