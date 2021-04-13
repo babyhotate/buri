@@ -31,7 +31,7 @@ app.get('/', (req, res) => {
   <ul>
     ${liTags.join('')}
   </ul>
-  <form action="/home" method="get">
+  <form action="/add_post" method="get">
     <input type="text" id="post" name="post" required
         minlength="1" maxlength="1000" size="30">
     <input type="submit" value="出荷">
@@ -42,9 +42,9 @@ app.get('/', (req, res) => {
 
 /**
  * ポストを追加する
- * e.g. /home?post=buri
+ * e.g. /add_post?post=buri
  */
-app.get('/home', (req, res) => {
+app.get('/add_post', (req, res) => {
   const post = new Post(POST_FILE_PATH);
   post.writePost(req.query.post);
   res.redirect('/');
