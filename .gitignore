@@ -4,3 +4,4 @@ node_modules
 data/posts.txt
 data/users.txt
 test/data/posts.txt
+test/data/users.txt

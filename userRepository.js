@@ -25,7 +25,7 @@ class UserRepository {
     }
 
     // Userオブジェクトのリストから指定されたIDのユーザを探し出す
-    const user = users.find(user => user.id = id);
+    const user = users.find(user => user.id === id);
     return user;
   }
 }
