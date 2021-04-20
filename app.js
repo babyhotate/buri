@@ -4,13 +4,13 @@ const express = require('express');
 const app = express();
 const port = 3000;
 
-const POST_FILE_PATH = 'data/posts.txt';
+const DATA_DIR_PATH = 'data';
 
 /**
  * ポストの一覧を表示する
  */
 app.get('/', (req, res) => {
-  const post = new Post(POST_FILE_PATH);
+  const post = new Post(DATA_DIR_PATH);
   const postList = post.getPosts();
   const liTags = postList.map((x, i) => `
     <li>
@@ -45,7 +45,7 @@ app.get('/', (req, res) => {
  * e.g. /add_post?post=buri
  */
 app.get('/add_post', (req, res) => {
-  const post = new Post(POST_FILE_PATH);
+  const post = new Post(DATA_DIR_PATH);
   post.writePost(req.query.post);
   res.redirect('/');
 });
@@ -55,7 +55,7 @@ app.get('/add_post', (req, res) => {
  * e.g. /delete_post?post_id=1
  */
 app.get('/delete_post', (req, res) => {
-  const post = new Post(POST_FILE_PATH);
+  const post = new Post(DATA_DIR_PATH);
   post.deletePost(req.query.post_id);
   res.redirect('/');
 });
@@ -65,7 +65,7 @@ app.get('/delete_post', (req, res) => {
  * e.g. /edit_post?post_id=1&edit_content=buri2
  */
 app.get("/edit_post", (req, res) => {
-  const post = new Post(POST_FILE_PATH);
+  const post = new Post(DATA_DIR_PATH);
   post.editPost(req.query.post_id, req.query.edit_content);
   res.redirect('/');
 });
