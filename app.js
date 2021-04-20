@@ -1,4 +1,5 @@
 const { Post } = require('./post');
+const { UserRepository } = require('./userRepository');
 
 const express = require('express');
 const app = express();
@@ -10,10 +11,14 @@ const DATA_DIR_PATH = 'data';
  * ポストの一覧を表示する
  */
 app.get('/', (req, res) => {
+  const userRepository = new UserRepository(DATA_DIR_PATH);
+  const user = userRepository.get_by_id('user2');
+
   const post = new Post(DATA_DIR_PATH);
   const postList = post.getPosts();
   const liTags = postList.map((x, i) => `
     <li>
+      ${user.displayName}
       <form action="/delete_post" method="get">
         <input type="hidden" value=${i} id="post" name="post_id">
         <input type="submit" value="廃棄">
