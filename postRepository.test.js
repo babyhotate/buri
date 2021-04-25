@@ -1,4 +1,5 @@
 const { PostRepository } = require('./postRepository');
+const { Post } = require('./post');
 const fs = require('fs');
 
 const DATA_DIR_PATH = 'test/data';
@@ -15,18 +16,18 @@ describe('#getPosts', () => {
     test('post全件が取得できる', () => {
         const posts = postRepository.getPosts();
         expect(posts.length).toBe(2);
-        expect(posts[0]).toBe("hoge");
-        expect(posts[1]).toBe("fuga");
+        expect(posts[0].message).toBe("hoge");
+        expect(posts[1].message).toBe("fuga");
     });
 });
 
 describe('#writePost', () => {
     test('1件の投稿をデータストアに書き込む', () => {
-        postRepository.writePost("piyo");
+        const post = new Post("piyo");
+        postRepository.writePost(post);
 
         let posts = fs.readFileSync(POSTS_FILE_PATH, 'utf-8');
         posts = posts.split("\n");
-
         expect(posts[posts.length - 1]).toBe("piyo");
     });
 });
@@ -46,7 +47,7 @@ describe('#deletePost', () => {
 
 describe('#editPost', () => {
     test('1件の投稿を編集する', () => {
-        postRepository.editPost(1, 'fuga2');
+        postRepository.editPost(1, new Post('fuga2'));
 
         let posts = fs.readFileSync(POSTS_FILE_PATH, 'utf-8');
         posts = posts.split("\n");

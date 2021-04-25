@@ -4,8 +4,8 @@
 
 ## ステップ
 - [x] PostRepositoryクラスを作成（Postモデルはまだ登場しない）
-- [ ] Postモデルを作成
-- [ ] PostRepositoryがPostモデルを返したり、受け取ったりするようにする
+- [x] Postモデルを作成
+- [x] PostRepositoryがPostモデルを返したり、受け取ったりするようにする
 -----
 
 - [ ] エディタがちゃんとわかりやすく怒ってくれるように設定する
