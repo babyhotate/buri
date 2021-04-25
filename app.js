@@ -1,4 +1,5 @@
 const { Post } = require('./post');
+const { PostRepository } = require('./postRepository');
 
 const express = require('express');
 const app = express();
@@ -10,8 +11,8 @@ const DATA_DIR_PATH = 'data';
  * ポストの一覧を表示する
  */
 app.get('/', (req, res) => {
-  const post = new Post(DATA_DIR_PATH);
-  const postList = post.getPosts();
+  const postRepository = new PostRepository(DATA_DIR_PATH);
+  const postList = postRepository.getPosts();
   const liTags = postList.map((x, i) => `
     <li>
       <form action="/delete_post" method="get">
@@ -19,7 +20,7 @@ app.get('/', (req, res) => {
         <input type="submit" value="廃棄">
       </form>
       <form action="/edit_post" method="get">
-        <input type=text name="edit_content" value="${x}">
+        <input type=text name="edit_content" value="${x.message}">
         <input type="hidden" value=${i} name="post_id">
         <input type="submit" value="加工">
       </form>
@@ -45,8 +46,8 @@ app.get('/', (req, res) => {
  * e.g. /add_post?post=buri
  */
 app.get('/add_post', (req, res) => {
-  const post = new Post(DATA_DIR_PATH);
-  post.writePost(req.query.post);
+  const postRepository = new PostRepository(DATA_DIR_PATH);
+  postRepository.writePost(new Post(req.query.post));
   res.redirect('/');
 });
 
@@ -55,8 +56,8 @@ app.get('/add_post', (req, res) => {
  * e.g. /delete_post?post_id=1
  */
 app.get('/delete_post', (req, res) => {
-  const post = new Post(DATA_DIR_PATH);
-  post.deletePost(req.query.post_id);
+  const postRepository = new PostRepository(DATA_DIR_PATH);
+  postRepository.deletePost(req.query.post_id);
   res.redirect('/');
 });
 
@@ -65,8 +66,8 @@ app.get('/delete_post', (req, res) => {
  * e.g. /edit_post?post_id=1&edit_content=buri2
  */
 app.get("/edit_post", (req, res) => {
-  const post = new Post(DATA_DIR_PATH);
-  post.editPost(req.query.post_id, req.query.edit_content);
+  const postRepository = new PostRepository(DATA_DIR_PATH);
+  postRepository.editPost(req.query.post_id, new Post(req.query.edit_content));
   res.redirect('/');
 });
 
