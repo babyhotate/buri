@@ -31,9 +31,9 @@ class PostRepository {
             // なんかよくわからないが空ファイルも、1行の空行があるように見えてしまう
             // ので、全くの空かどうかで書き込み方を切り替える必要がある
             if (postList.length > 0) {
-                fs.appendFileSync(this.filePath, "\n" + post.message);
+                fs.appendFileSync(this.filePath, "\n" + post.userId + "," + post.message);
             } else {
-                fs.appendFileSync(this.filePath, post.message);
+                fs.appendFileSync(this.filePath, post.userId + "," + post.message);
             }
         }
         catch (e) {

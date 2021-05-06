@@ -25,12 +25,12 @@ describe('#getPosts', () => {
 
 describe('#writePost', () => {
     test('1件の投稿をデータストアに書き込む', () => {
-        const post = new Post("piyo");
+        const post = new Post("user1", "piyo");
         postRepository.writePost(post);
 
         let posts = fs.readFileSync(POSTS_FILE_PATH, 'utf-8');
         posts = posts.split("\n");
-        expect(posts[posts.length - 1]).toBe("piyo");
+        expect(posts[posts.length - 1]).toBe("user1,piyo");
     });
 });
 
