@@ -18,7 +18,10 @@ class PostRepository {
         const postList = posts.split('\n').filter(value => value !== "");
 
         // 文字列のリストから、Postモデルのリストを作る
-        const models = postList.map(message => new Post(message));
+        const models = postList.map(post => {
+            const [userId, message] = post.split(",");
+            return new Post(userId, message);
+        });
         return models;
     }
 

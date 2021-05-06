@@ -9,14 +9,16 @@ let postRepository;
 beforeEach(() => {
     postRepository = new PostRepository(DATA_DIR_PATH);
     // posts.txtをテストしたい状態にする
-    fs.writeFileSync(POSTS_FILE_PATH, ["hoge", "fuga"].join("\n"));
+    fs.writeFileSync(POSTS_FILE_PATH, ["user1,hoge", "user2,fuga"].join("\n"));
 });
 
 describe('#getPosts', () => {
     test('post全件が取得できる', () => {
         const posts = postRepository.getPosts();
         expect(posts.length).toBe(2);
+        expect(posts[0].userId).toBe("user1");
         expect(posts[0].message).toBe("hoge");
+        expect(posts[1].userId).toBe("user2");
         expect(posts[1].message).toBe("fuga");
     });
 });
