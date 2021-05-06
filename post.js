@@ -1,8 +1,10 @@
 class Post {
-  message
+  userId;
+  message;
 
-  constructor(message) {
-    this.message = message
+  constructor(userId, message) {
+    this.userId = userId;
+    this.message = message;
   }
 }
 
