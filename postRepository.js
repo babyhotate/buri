@@ -18,7 +18,10 @@ class PostRepository {
         const postList = posts.split('\n').filter(value => value !== "");
 
         // 文字列のリストから、Postモデルのリストを作る
-        const models = postList.map(message => new Post(message));
+        const models = postList.map(post => {
+            const [userId, message] = post.split(",");
+            return new Post(userId, message);
+        });
         return models;
     }
 
@@ -28,9 +31,9 @@ class PostRepository {
             // なんかよくわからないが空ファイルも、1行の空行があるように見えてしまう
             // ので、全くの空かどうかで書き込み方を切り替える必要がある
             if (postList.length > 0) {
-                fs.appendFileSync(this.filePath, "\n" + post.message);
+                fs.appendFileSync(this.filePath, "\n" + post.userId + "," + post.message);
             } else {
-                fs.appendFileSync(this.filePath, post.message);
+                fs.appendFileSync(this.filePath, post.userId + "," + post.message);
             }
         }
         catch (e) {
@@ -41,8 +44,8 @@ class PostRepository {
     deletePost(post_id) {
         const postList = this.getPosts();
         postList.splice(post_id, 1);
-        const messages = postList.map((p) => p.message);
-        const lines = messages.join("\n");
+        const postStringLines = postList.map((p) => p.userId + "," + p.message);
+        const lines = postStringLines.join("\n");
 
         fs.writeFileSync(this.filePath, lines, function (err) {
             if (err) { throw err; }
@@ -52,8 +55,8 @@ class PostRepository {
     editPost(post_id, edit_content) {
         const postList = this.getPosts();
         postList[post_id] = edit_content;
-        const messages = postList.map((p) => p.message);
-        const lines = messages.join("\n");
+        const postStringLines = postList.map((p) => p.userId + "," + p.message);
+        const lines = postStringLines.join("\n");
 
         fs.writeFileSync(this.filePath, lines, function (err) {
             if (err) { throw err; }

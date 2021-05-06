@@ -1,4 +1,5 @@
 const { Post } = require('./post');
+const { UserRepository } = require('./userRepository');
 const { PostRepository } = require('./postRepository');
 
 const express = require('express');
@@ -11,10 +12,17 @@ const DATA_DIR_PATH = 'data';
  * ポストの一覧を表示する
  */
 app.get('/', (req, res) => {
+  const userRepository = new UserRepository(DATA_DIR_PATH);
+  const user = userRepository.get_by_id('user2');
+
   const postRepository = new PostRepository(DATA_DIR_PATH);
   const postList = postRepository.getPosts();
-  const liTags = postList.map((x, i) => `
+  const liTags = postList.map((x, i) => {
+    const userRepository = new UserRepository(DATA_DIR_PATH);
+    const user = userRepository.get_by_id(x.userId);
+    return `
     <li>
+      ${user.displayName}
       <form action="/delete_post" method="get">
         <input type="hidden" value=${i} id="post" name="post_id">
         <input type="submit" value="廃棄">
@@ -24,7 +32,7 @@ app.get('/', (req, res) => {
         <input type="hidden" value=${i} name="post_id">
         <input type="submit" value="加工">
       </form>
-    </li>`
+    </li>`;}
   );
 
   res.send(`
