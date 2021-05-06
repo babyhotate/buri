@@ -44,8 +44,8 @@ class PostRepository {
     deletePost(post_id) {
         const postList = this.getPosts();
         postList.splice(post_id, 1);
-        const messages = postList.map((p) => p.message);
-        const lines = messages.join("\n");
+        const postStringLines = postList.map((p) => p.userId + "," + p.message);
+        const lines = postStringLines.join("\n");
 
         fs.writeFileSync(this.filePath, lines, function (err) {
             if (err) { throw err; }

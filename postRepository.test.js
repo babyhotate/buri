@@ -36,14 +36,14 @@ describe('#writePost', () => {
 
 
 describe('#deletePost', () => {
-    test('1件の投稿を削除する', () => {
+    test.only('1件の投稿を削除する', () => {
         postRepository.deletePost(1);
 
         let posts = fs.readFileSync(POSTS_FILE_PATH, 'utf-8');
         posts = posts.split("\n");
 
-        expect(posts).not.toContain('fuga');
-        expect(posts).toContain('hoge');
+        expect(posts).not.toContain('user2,fuga');
+        expect(posts).toContain('user1,hoge');
     });
 });
 
