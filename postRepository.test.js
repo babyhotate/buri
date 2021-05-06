@@ -36,7 +36,7 @@ describe('#writePost', () => {
 
 
 describe('#deletePost', () => {
-    test.only('1件の投稿を削除する', () => {
+    test('1件の投稿を削除する', () => {
         postRepository.deletePost(1);
 
         let posts = fs.readFileSync(POSTS_FILE_PATH, 'utf-8');
