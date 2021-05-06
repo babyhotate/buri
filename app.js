@@ -17,7 +17,10 @@ app.get('/', (req, res) => {
 
   const postRepository = new PostRepository(DATA_DIR_PATH);
   const postList = postRepository.getPosts();
-  const liTags = postList.map((x, i) => `
+  const liTags = postList.map((x, i) => {
+    const userRepository = new UserRepository(DATA_DIR_PATH);
+    const user = userRepository.get_by_id(x.userId);
+    return `
     <li>
       ${user.displayName}
       <form action="/delete_post" method="get">
@@ -29,7 +32,7 @@ app.get('/', (req, res) => {
         <input type="hidden" value=${i} name="post_id">
         <input type="submit" value="加工">
       </form>
-    </li>`
+    </li>`;}
   );
 
   res.send(`
