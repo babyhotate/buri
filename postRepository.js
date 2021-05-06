@@ -55,8 +55,8 @@ class PostRepository {
     editPost(post_id, edit_content) {
         const postList = this.getPosts();
         postList[post_id] = edit_content;
-        const messages = postList.map((p) => p.message);
-        const lines = messages.join("\n");
+        const postStringLines = postList.map((p) => p.userId + "," + p.message);
+        const lines = postStringLines.join("\n");
 
         fs.writeFileSync(this.filePath, lines, function (err) {
             if (err) { throw err; }

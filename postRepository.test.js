@@ -49,11 +49,11 @@ describe('#deletePost', () => {
 
 describe('#editPost', () => {
     test('1件の投稿を編集する', () => {
-        postRepository.editPost(1, new Post('fuga2'));
+        postRepository.editPost(1, new Post('user2', 'fuga2'));
 
         let posts = fs.readFileSync(POSTS_FILE_PATH, 'utf-8');
         posts = posts.split("\n");
 
-        expect(posts[1]).toBe("fuga2");
+        expect(posts[1]).toBe("user2,fuga2");
     });
 });
