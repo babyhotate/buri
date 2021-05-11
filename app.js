@@ -12,14 +12,17 @@ const DATA_DIR_PATH = 'data';
  * ポストの一覧を表示する
  */
 app.get('/', (req, res) => {
-  const userRepository = new UserRepository(DATA_DIR_PATH);
-  const user = userRepository.get_by_id('user2');
 
   const postRepository = new PostRepository(DATA_DIR_PATH);
   const postList = postRepository.getPosts();
+  const userIds = postList.map(post => post.userId);
+
+  const userRepository = new UserRepository(DATA_DIR_PATH);
+  // MEMO: UserRepository に getByIds() はまだ実装されていない
+  const usersHasPosts = userRepository.getByIds(userIds);
+
   const liTags = postList.map((x, i) => {
-    const userRepository = new UserRepository(DATA_DIR_PATH);
-    const user = userRepository.get_by_id(x.userId);
+    const user = usersHasPosts.find(user => user.id === x.userId);
     return `
     <li>
       ${user.displayName}
@@ -32,8 +35,8 @@ app.get('/', (req, res) => {
         <input type="hidden" value=${i} name="post_id">
         <input type="submit" value="加工">
       </form>
-    </li>`;}
-  );
+    </li>`;
+  });
 
   res.send(`
   <h1>buri</h1>
@@ -55,7 +58,7 @@ app.get('/', (req, res) => {
  */
 app.get('/add_post', (req, res) => {
   const postRepository = new PostRepository(DATA_DIR_PATH);
-  postRepository.writePost(new Post(req.query.post));
+  postRepository.writePost(new Post("user3", req.query.post));
   res.redirect('/');
 });
 
@@ -75,7 +78,7 @@ app.get('/delete_post', (req, res) => {
  */
 app.get("/edit_post", (req, res) => {
   const postRepository = new PostRepository(DATA_DIR_PATH);
-  postRepository.editPost(req.query.post_id, new Post(req.query.edit_content));
+  postRepository.editPost(req.query.post_id, req.query.edit_content);
   res.redirect('/');
 });
 

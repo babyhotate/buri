@@ -54,7 +54,8 @@ class PostRepository {
 
     editPost(post_id, edit_content) {
         const postList = this.getPosts();
-        postList[post_id] = edit_content;
+        const editedPost = new Post(postList[post_id].userId, edit_content);
+        postList[post_id] = editedPost;
         const postStringLines = postList.map((p) => p.userId + "," + p.message);
         const lines = postStringLines.join("\n");
 
