@@ -46,12 +46,7 @@ getByIds(ids) {
   }
 
   // Userオブジェクトのリストから指定されたIDのユーザを探し出す
-  let filteredUsers = [];
-  for (const id of ids) {
-    const user = users.find(user => user.id === id);
-    filteredUsers.push(user);
-  }
-  return filteredUsers;
+  return users.filter(user => ids.includes(user.id))
 }
 }
 
