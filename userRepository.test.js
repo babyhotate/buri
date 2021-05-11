@@ -25,4 +25,15 @@ describe('#getByIds', () => {
         expect(users[1].id).toBe("user2");
         expect(users[1].displayName).toBe("hamachi");
     });
+    test('存在しないIdが渡されたときにエラーにならない', () => {
+        fs.writeFileSync(USERS_FILE_PATH, ["user1,hotate", "user2,hamachi"].join("\n"));
+
+        const userRepository = new UserRepository(DATA_DIR_PATH);
+        const userIds = ["user1", "user3"];
+        const users = userRepository.getByIds(userIds);
+
+        expect(users.length).toBe(1);
+        expect(users[0].id).toBe("user1");
+        expect(users[0].displayName).toBe("hotate");
+    });
 });
