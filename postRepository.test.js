@@ -49,7 +49,7 @@ describe('#deletePost', () => {
 
 describe('#editPost', () => {
     test('1件の投稿を編集する', () => {
-        postRepository.editPost(1, new Post('user2', 'fuga2'));
+        postRepository.editPost(1, 'fuga2');
 
         let posts = fs.readFileSync(POSTS_FILE_PATH, 'utf-8');
         posts = posts.split("\n");
