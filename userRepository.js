@@ -8,7 +8,7 @@ class UserRepository {
     this.filePath = `${dataDirPath}/users.txt`;
   }
 
-  get_by_id(id) {
+  getById(id) {
     if (!fs.existsSync(this.filePath)) {
       fs.writeFileSync(this.filePath, "");
     }
