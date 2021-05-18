@@ -18,7 +18,6 @@ app.get('/', (req, res) => {
   const userIds = postList.map(post => post.userId);
 
   const userRepository = new UserRepository(DATA_DIR_PATH);
-  // MEMO: UserRepository に getByIds() はまだ実装されていない
   const usersHasPosts = userRepository.getByIds(userIds);
 
   const liTags = postList.map((x, i) => {
