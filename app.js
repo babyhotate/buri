@@ -1,6 +1,6 @@
-const { Post } = require('./post');
-const { UserRepository } = require('./userRepository');
-const { PostRepository } = require('./postRepository');
+const { Post } = require('./models/post');
+const { UserRepository } = require('./repositories/userRepository');
+const { PostRepository } = require('./repositories/postRepository');
 
 const express = require('express');
 const app = express();
