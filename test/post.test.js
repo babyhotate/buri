@@ -1,5 +1,5 @@
 
-const { Post } = require('./post');
+const { Post } = require('../post');
 
 test("Postのコンストラクタ", () => {
     const userId = "user1";

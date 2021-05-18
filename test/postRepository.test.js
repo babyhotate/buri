@@ -1,5 +1,5 @@
-const { PostRepository } = require('./postRepository');
-const { Post } = require('./post');
+const { PostRepository } = require('../repositories/postRepository');
+const { Post } = require('../post');
 const fs = require('fs');
 
 const DATA_DIR_PATH = 'test/data';

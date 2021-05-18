@@ -1,4 +1,4 @@
-const { UserRepository } = require('./userRepository');
+const { UserRepository } = require('../repositories/userRepository');
 const fs = require('fs');
 
 const DATA_DIR_PATH = 'test/data';
