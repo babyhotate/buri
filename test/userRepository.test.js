@@ -37,3 +37,15 @@ describe('#getByIds', () => {
         expect(users[0].displayName).toBe("hotate");
     });
 });
+
+describe('#getAll', () => {
+    test('Userのリストを返す', () => {
+        fs.writeFileSync(USERS_FILE_PATH, ["user1,hotate", "user2,hamachi"].join("\n"));
+        const userRepository = new UserRepository(DATA_DIR_PATH);
+        actual = userRepository.getAll();
+
+        expect(actual.length).toBe(2);
+        expect(actual[0].id).toBe("user1");
+        expect(actual[1].id).toBe("user2");
+    });
+});
