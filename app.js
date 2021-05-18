@@ -20,6 +20,9 @@ app.get('/', (req, res) => {
   const userRepository = new UserRepository(DATA_DIR_PATH);
   const usersHasPosts = userRepository.getByIds(userIds);
 
+  const users = userRepository.getAll();
+  console.log(users);
+
   const liTags = postList.map((x, i) => {
     const user = usersHasPosts.find(user => user.id === x.userId);
     return `
@@ -44,13 +47,10 @@ app.get('/', (req, res) => {
     ${liTags.join('')}
   </ul>
   <form action="/add_post" method="get">
-    <select name="pets" id="pet-select">
-      <option value="dog">Dog</option>
-      <option value="cat">Cat</option>
-      <option value="hamster">Hamster</option>
-      <option value="parrot">Parrot</option>
-      <option value="spider">Spider</option>
-      <option value="goldfish">Goldfish</option>
+    <select name="user" id="user-select">
+      <option value="${users[0].id}">${users[0].displayName}</option>
+      <option value="${users[1].id}">${users[1].displayName}</option>
+      <option value="${users[2].id}">${users[2].displayName}</option>
     </select>
     <input type="text" id="post" name="post" required
       minlength="1" maxlength="1000" size="30">
