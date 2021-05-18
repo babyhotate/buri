@@ -21,7 +21,6 @@ app.get('/', (req, res) => {
   const usersHasPosts = userRepository.getByIds(userIds);
 
   const users = userRepository.getAll();
-  console.log(users);
 
   const liTags = postList.map((x, i) => {
     const user = usersHasPosts.find(user => user.id === x.userId);
@@ -40,6 +39,7 @@ app.get('/', (req, res) => {
     </li>`;
   });
 
+  const userSelect = users.map(user => `<option value="${user.id}">${user.displayName}</option>`);
 
   res.send(`
   <h1>buri</h1>
@@ -48,9 +48,7 @@ app.get('/', (req, res) => {
   </ul>
   <form action="/add_post" method="get">
     <select name="user" id="user-select">
-      <option value="${users[0].id}">${users[0].displayName}</option>
-      <option value="${users[1].id}">${users[1].displayName}</option>
-      <option value="${users[2].id}">${users[2].displayName}</option>
+      ${userSelect}
     </select>
     <input type="text" id="post" name="post" required
       minlength="1" maxlength="1000" size="30">
