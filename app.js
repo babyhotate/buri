@@ -37,14 +37,23 @@ app.get('/', (req, res) => {
     </li>`;
   });
 
+
   res.send(`
   <h1>buri</h1>
   <ul>
     ${liTags.join('')}
   </ul>
   <form action="/add_post" method="get">
+    <select name="pets" id="pet-select">
+      <option value="dog">Dog</option>
+      <option value="cat">Cat</option>
+      <option value="hamster">Hamster</option>
+      <option value="parrot">Parrot</option>
+      <option value="spider">Spider</option>
+      <option value="goldfish">Goldfish</option>
+    </select>
     <input type="text" id="post" name="post" required
-        minlength="1" maxlength="1000" size="30">
+      minlength="1" maxlength="1000" size="30">
     <input type="submit" value="出荷">
   </form>
   `);
