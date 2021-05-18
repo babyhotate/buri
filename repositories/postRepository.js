@@ -1,5 +1,5 @@
 const fs = require('fs');
-const { Post } = require('../post');
+const { Post } = require('../models/post');
 
 class PostRepository {
     filePath;

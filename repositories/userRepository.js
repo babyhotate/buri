@@ -1,5 +1,5 @@
 const fs = require('fs');
-const { User } = require('../user');
+const { User } = require('../models/user');
 
 class UserRepository {
   filePath;
