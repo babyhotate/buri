@@ -18,8 +18,9 @@ app.get('/', (req, res) => {
   const userIds = postList.map(post => post.userId);
 
   const userRepository = new UserRepository(DATA_DIR_PATH);
-  // MEMO: UserRepository に getByIds() はまだ実装されていない
   const usersHasPosts = userRepository.getByIds(userIds);
+
+  const users = userRepository.getAll();
 
   const liTags = postList.map((x, i) => {
     const user = usersHasPosts.find(user => user.id === x.userId);
@@ -38,14 +39,19 @@ app.get('/', (req, res) => {
     </li>`;
   });
 
+  const userSelect = users.map(user => `<option value="${user.id}">${user.displayName}</option>`);
+
   res.send(`
   <h1>buri</h1>
   <ul>
     ${liTags.join('')}
   </ul>
   <form action="/add_post" method="get">
+    <select name="user" id="user-select">
+      ${userSelect}
+    </select>
     <input type="text" id="post" name="post" required
-        minlength="1" maxlength="1000" size="30">
+      minlength="1" maxlength="1000" size="30">
     <input type="submit" value="出荷">
   </form>
   `);
@@ -54,11 +60,11 @@ app.get('/', (req, res) => {
 
 /**
  * ポストを追加する
- * e.g. /add_post?post=buri
+ * e.g. /add_post?user=user1&post=buri
  */
 app.get('/add_post', (req, res) => {
   const postRepository = new PostRepository(DATA_DIR_PATH);
-  postRepository.writePost(new Post("user3", req.query.post));
+  postRepository.writePost(new Post(req.query.user, req.query.post));
   res.redirect('/');
 });
 

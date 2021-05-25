@@ -8,6 +8,21 @@ class UserRepository {
     this.filePath = `${dataDirPath}/users.txt`;
   }
 
+  getAll() {
+    if (!fs.existsSync(this.filePath)) {
+      fs.writeFileSync(this.filePath, "");
+    }
+
+    // データストアの全データを読み出す
+    let data = fs.readFileSync(this.filePath, 'utf-8');
+    const lines = data.split('\n').filter(value => value !== "");
+
+    return lines.map((line) => {
+      const values = line.split(',');
+      return new User(values[0], values[1]);
+    });
+  }
+
   getById(id) {
     if (!fs.existsSync(this.filePath)) {
       fs.writeFileSync(this.filePath, "");
