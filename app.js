@@ -64,7 +64,7 @@ app.get('/', (req, res) => {
  */
 app.get('/add_post', (req, res) => {
   const postRepository = new PostRepository(DATA_DIR_PATH);
-  postRepository.writePost(new Post("user3", req.query.post));
+  postRepository.writePost(new Post(req.query.user, req.query.post));
   res.redirect('/');
 });
 
