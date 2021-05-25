@@ -60,7 +60,7 @@ app.get('/', (req, res) => {
 
 /**
  * ポストを追加する
- * e.g. /add_post?post=buri
+ * e.g. /add_post?user=user1&post=buri
  */
 app.get('/add_post', (req, res) => {
   const postRepository = new PostRepository(DATA_DIR_PATH);
