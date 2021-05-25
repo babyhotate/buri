@@ -1,0 +1,34 @@
+<h1>buri</h1>
+<ul>
+  {{#each postList}}
+    <li>
+      {{this.user.displayName}}
+      <form action="/delete_post" method="get">
+        <input type="hidden" value={{@index}} id="post" name="post_id" />
+        <input type="submit" value="廃棄" />
+      </form>
+      <form action="/edit_post" method="get">
+        <input type="text" name="edit_content" value="{{this.message}}" />
+        <input type="hidden" value={{@index}} name="post_id" />
+        <input type="submit" value="加工" />
+      </form>
+    </li>
+  {{/each}}
+</ul>
+<form action="/add_post" method="get">
+  <select name="user" id="user-select">
+    {{#each users}}
+      <option value="{{this.id}}">{{this.displayName}}</option>
+    {{/each}}
+  </select>
+  <input
+    type="text"
+    id="post"
+    name="post"
+    required
+    minlength="1"
+    maxlength="1000"
+    size="30"
+  />
+  <input type="submit" value="出荷" />
+</form>

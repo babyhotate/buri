@@ -2,8 +2,11 @@ const { Post } = require('./models/post');
 const { UserRepository } = require('./repositories/userRepository');
 const { PostRepository } = require('./repositories/postRepository');
 
+const handlebars = require('express-handlebars');
 const express = require('express');
 const app = express();
+app.engine('handlebars', handlebars());
+app.set("view engine", "handlebars");
 const port = 3000;
 
 const DATA_DIR_PATH = 'data';
@@ -12,7 +15,6 @@ const DATA_DIR_PATH = 'data';
  * ポストの一覧を表示する
  */
 app.get('/', (req, res) => {
-
   const postRepository = new PostRepository(DATA_DIR_PATH);
   const postList = postRepository.getPosts();
   const userIds = postList.map(post => post.userId);
@@ -22,39 +24,10 @@ app.get('/', (req, res) => {
 
   const users = userRepository.getAll();
 
-  const liTags = postList.map((x, i) => {
-    const user = usersHasPosts.find(user => user.id === x.userId);
-    return `
-    <li>
-      ${user.displayName}
-      <form action="/delete_post" method="get">
-        <input type="hidden" value=${i} id="post" name="post_id">
-        <input type="submit" value="廃棄">
-      </form>
-      <form action="/edit_post" method="get">
-        <input type=text name="edit_content" value="${x.message}">
-        <input type="hidden" value=${i} name="post_id">
-        <input type="submit" value="加工">
-      </form>
-    </li>`;
+  res.render("index", {
+    postList: postList.map(post => ({ ...post, user: usersHasPosts.find(user => user.id === post.userId) })),
+    users: users
   });
-
-  const userSelect = users.map(user => `<option value="${user.id}">${user.displayName}</option>`);
-
-  res.send(`
-  <h1>buri</h1>
-  <ul>
-    ${liTags.join('')}
-  </ul>
-  <form action="/add_post" method="get">
-    <select name="user" id="user-select">
-      ${userSelect}
-    </select>
-    <input type="text" id="post" name="post" required
-      minlength="1" maxlength="1000" size="30">
-    <input type="submit" value="出荷">
-  </form>
-  `);
 });
 
 
