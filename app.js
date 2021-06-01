@@ -1,6 +1,12 @@
-const { Post } = require('./models/post');
-const { UserRepository } = require('./repositories/userRepository');
-const { PostRepository } = require('./repositories/postRepository');
+const {
+  Post
+} = require('./models/post');
+const {
+  UserRepository
+} = require('./repositories/userRepository');
+const {
+  PostRepository
+} = require('./repositories/postRepository');
 
 const handlebars = require('express-handlebars');
 const express = require('express');
@@ -25,7 +31,10 @@ app.get('/', (req, res) => {
   const users = userRepository.getAll();
 
   res.render("index", {
-    postList: postList.map(post => ({ ...post, user: usersHasPosts.find(user => user.id === post.userId) })),
+    postList: postList.map(post => ({
+      ...post,
+      user: usersHasPosts.find(user => user.id === post.userId)
+    })),
     users: users
   });
 });
@@ -73,6 +82,8 @@ app.get('/kuji', (req, res) => {
   <ol>${result_list.map(x => "<li>" + x + "</li>").join("\n")}</ol>
   </html>`);
 });
+
+app.use(express.static("assets"));
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
