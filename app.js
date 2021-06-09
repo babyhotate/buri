@@ -39,6 +39,16 @@ app.get('/', (req, res) => {
   });
 });
 
+/**
+ * 最新のポスト一覧をJSONで返す
+ */
+app.get('/api/posts', (req, res) => {
+  const postRepository = new PostRepository(DATA_DIR_PATH);
+  const postList = postRepository.getPosts();
+
+  res.json({ posts: postList });
+});
+
 
 /**
  * ポストを追加する
