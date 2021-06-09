@@ -14,7 +14,7 @@ function apple(posts) {
 
     for (const post of posts.posts) {
         const li = document.createElement('li');
-        li.textContent = 'nakanoh'; //　現状のAPIのレスポンスにはdisplayNameが入っていないので、ここを埋めることができない
+        li.textContent = post['user']['displayName'];
 
         const formForDelete = document.createElement('form');
         formForDelete.setAttribute('action', '/delete_post');

@@ -45,8 +45,18 @@ app.get('/', (req, res) => {
 app.get('/api/posts', (req, res) => {
   const postRepository = new PostRepository(DATA_DIR_PATH);
   const postList = postRepository.getPosts();
+  const userIds = postList.map(post => post.userId);
 
-  res.json({ posts: postList });
+  const userRepository = new UserRepository(DATA_DIR_PATH);
+  const usersHasPosts = userRepository.getByIds(userIds);
+
+  // このJSONにuser.displayNameも含める
+  res.json({
+    posts: postList.map(post => ({
+      ...post,
+      user: usersHasPosts.find(user => user.id === post.userId)
+    })),
+  });
 });
 
 
