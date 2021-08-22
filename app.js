@@ -7,6 +7,7 @@ const {
 const {
   PostRepository
 } = require('./repositories/postRepository');
+const { EmojiRepository } = require('./repositories/emojiRepository');
 
 const handlebars = require('express-handlebars');
 const express = require('express');
@@ -29,11 +30,15 @@ app.get('/', (req, res) => {
   const usersHasPosts = userRepository.getByIds(userIds);
 
   const users = userRepository.getAll();
+  
+  const emojiRepository = new EmojiRepository(DATA_DIR_PATH);
+  const emojis = emojiRepository.getAll();
 
   res.render("index", {
     postList: postList.map(post => ({
       ...post,
-      user: usersHasPosts.find(user => user.id === post.userId)
+      user: usersHasPosts.find((user) => user.id === post.userId),
+      emojis: emojis,
     })),
     users: users
   });

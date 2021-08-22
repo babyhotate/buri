@@ -12,6 +12,11 @@
         <input type="hidden" value={{@index}} name="post_id" />
         <input type="submit" value="加工" />
       </form>
+      <select name="emoji" id="emoji-select">
+        {{#each emojis}}
+          <option value="{{this.name}}">{{this.emoji}}</option>
+        {{/each}}
+      </select>
     </li>
   {{/each}}
 </ul>
