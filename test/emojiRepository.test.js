@@ -12,9 +12,9 @@ beforeEach(() => {
     fs.writeFileSync(EMOJI_FILE_PATH, ["good,👍", "dog,🐶"].join("\n"));
 });
 
-describe('#getEmojis', () => {
+describe('#getAll', () => {
     test('emoji全件が取得できる', () => {
-        const emojis = emojiRepository.getEmojis();
+        const emojis = emojiRepository.getAll();
         expect(emojis.length).toBe(2);
         expect(emojis[0].name).toBe("good");
         expect(emojis[0].emoji).toBe("👍");

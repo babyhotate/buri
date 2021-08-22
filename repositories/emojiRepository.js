@@ -8,7 +8,7 @@ class EmojiRepository {
         this.filePath = `${dataDirPath}/emojis.txt`;
     }
 
-    getEmojis() {
+    getAll() {
         if (!fs.existsSync(this.filePath)) {
             fs.writeFileSync(this.filePath, "");
         }
