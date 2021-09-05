@@ -19,8 +19,8 @@ class PostRepository {
 
         // 文字列のリストから、Postモデルのリストを作る
         const models = postList.map(post => {
-            const [userId, message] = post.split(",");
-            return new Post(userId, message);
+            const [userId, message, id] = post.split(",");
+            return new Post(userId, message, id);
         });
         return models;
     }
