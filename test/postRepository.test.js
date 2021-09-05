@@ -44,8 +44,8 @@ describe('#deletePost', () => {
         let posts = fs.readFileSync(POSTS_FILE_PATH, 'utf-8');
         posts = posts.split("\n");
 
-        expect(posts).not.toContain('user2,fuga');
-        expect(posts).toContain('user1,hoge');
+        expect(posts).not.toContain('user2,fuga1,2');
+        expect(posts).toContain('user1,hoge,1');
     });
 });
 
