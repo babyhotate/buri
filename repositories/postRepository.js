@@ -25,7 +25,7 @@ class PostRepository {
         return models;
     }
 
-    newWritePost(userId, message) {
+    writePost(userId, message) {
         const postList = this.getPosts();
         const latestId = postList[postList.length - 1].id;
         const post = new Post(userId, message, Number(latestId) + 1);
@@ -43,21 +43,6 @@ class PostRepository {
         }
     }
 
-    writePost(post) {
-        try {
-            const postList = this.getPosts();
-            // なんかよくわからないが空ファイルも、1行の空行があるように見えてしまう
-            // ので、全くの空かどうかで書き込み方を切り替える必要がある
-            if (postList.length > 0) {
-                fs.appendFileSync(this.filePath, "\n" + post.userId + "," + post.message);
-            } else {
-                fs.appendFileSync(this.filePath, post.userId + "," + post.message);
-            }
-        }
-        catch (e) {
-            console.log(e.message);
-        }
-    }
     // @params index {Number}
     deletePost(index) {
         const postList = this.getPosts();
