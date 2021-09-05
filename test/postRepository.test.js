@@ -56,6 +56,6 @@ describe('#editPost', () => {
         let posts = fs.readFileSync(POSTS_FILE_PATH, 'utf-8');
         posts = posts.split("\n");
 
-        expect(posts[1]).toBe("user2,fuga2");
+        expect(posts[1]).toBe("user2,fuga2,2");
     });
 });
