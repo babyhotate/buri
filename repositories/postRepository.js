@@ -40,10 +40,10 @@ class PostRepository {
             console.log(e.message);
         }
     }
-
-    deletePost(post_id) {
+    // @params index {Number}
+    deletePost(index) {
         const postList = this.getPosts();
-        postList.splice(post_id, 1);
+        postList.splice(index, 1);
         const postStringLines = postList.map((p) => p.userId + "," + p.message);
         const lines = postStringLines.join("\n");
 
@@ -52,10 +52,11 @@ class PostRepository {
         });
     }
 
-    editPost(post_id, edit_content) {
+    // @params index {Number}
+    editPost(index, edit_content) {
         const postList = this.getPosts();
-        const editedPost = new Post(postList[post_id].userId, edit_content);
-        postList[post_id] = editedPost;
+        const editedPost = new Post(postList[index].userId, edit_content);
+        postList[index] = editedPost;
         const postStringLines = postList.map((p) => p.userId + "," + p.message);
         const lines = postStringLines.join("\n");
 
