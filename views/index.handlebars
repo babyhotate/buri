@@ -3,14 +3,14 @@
   {{#each postList}}
     <li>
       {{this.user.displayName}}
-      <form action="/delete_post" method="get">
-        <input type="hidden" value={{@index}} id="post" name="post_id" />
-        <input type="submit" value="廃棄" />
-      </form>
-      <form action="/edit_post" method="get">
+      <form action="/edit_post" method="get" style="display: inline">
         <input type="text" name="edit_content" value="{{this.message}}" />
         <input type="hidden" value={{@index}} name="post_id" />
         <input type="submit" value="加工" />
+      </form>
+      <form action="/delete_post" method="get" style="display: inline">
+        <input type="hidden" value={{@index}} id="post" name="post_id" />
+        <input type="submit" value="廃棄" />
       </form>
     </li>
   {{/each}}
