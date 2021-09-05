@@ -25,6 +25,16 @@ describe('#getPosts', () => {
     });
 });
 
+describe("#newWritePost", () => {
+  test("1件の投稿をデータストアに書き込む", () => {
+    postRepository.newWritePost("user1", "piyo");
+
+    let posts = fs.readFileSync(POSTS_FILE_PATH, "utf-8");
+    posts = posts.split("\n");
+    expect(posts[posts.length - 1]).toBe("user1,piyo,3");
+  });
+});
+
 describe('#writePost', () => {
     test('1件の投稿をデータストアに書き込む', () => {
         const post = new Post("user1", "piyo");
