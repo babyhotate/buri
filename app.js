@@ -22,7 +22,7 @@ const DATA_DIR_PATH = 'data';
  */
 app.get('/', (req, res) => {
   const postRepository = new PostRepository(DATA_DIR_PATH);
-  const postList = postRepository.getPosts();
+  const postList = postRepository.findAll();
   const userIds = postList.map(post => post.userId);
 
   const userRepository = new UserRepository(DATA_DIR_PATH);
@@ -44,7 +44,7 @@ app.get('/', (req, res) => {
  */
 app.get('/api/posts', (req, res) => {
   const postRepository = new PostRepository(DATA_DIR_PATH);
-  const postList = postRepository.getPosts();
+  const postList = postRepository.findAll();
   const userIds = postList.map(post => post.userId);
 
   const userRepository = new UserRepository(DATA_DIR_PATH);
@@ -66,7 +66,7 @@ app.get('/api/posts', (req, res) => {
  */
 app.get('/add_post', (req, res) => {
   const postRepository = new PostRepository(DATA_DIR_PATH);
-  postRepository.writePost(req.query.user, req.query.post);
+  postRepository.create(req.query.user, req.query.post);
   res.redirect('/');
 });
 
@@ -76,7 +76,7 @@ app.get('/add_post', (req, res) => {
  */
 app.get('/delete_post', (req, res) => {
   const postRepository = new PostRepository(DATA_DIR_PATH);
-  postRepository.deletePost(req.query.post_id);
+  postRepository.delete(req.query.post_id);
   res.redirect('/');
 });
 
@@ -86,7 +86,7 @@ app.get('/delete_post', (req, res) => {
  */
 app.get("/edit_post", (req, res) => {
   const postRepository = new PostRepository(DATA_DIR_PATH);
-  postRepository.editPost(req.query.post_id, req.query.edit_content);
+  postRepository.update(req.query.post_id, req.query.edit_content);
   res.redirect('/');
 });
 
