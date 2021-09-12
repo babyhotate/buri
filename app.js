@@ -71,7 +71,7 @@ app.get('/api/posts', (req, res) => {
  */
 app.get('/add_post', (req, res) => {
   const postRepository = new PostRepository(DATA_DIR_PATH);
-  postRepository.writePost(new Post(req.query.user, req.query.post));
+  postRepository.writePost(req.query.user, req.query.post);
   res.redirect('/');
 });
 
