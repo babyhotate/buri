@@ -23,3 +23,9 @@ describe("#getByPostId", () => {
     expect(reactions[1].userId).toBe("user2");
   });
 });
+
+describe("create", () => {
+  test("特定のPOSTにリアクションを登録する", () => {
+    const reactions = reactionRepository.getByPostId(postId);
+  });
+});

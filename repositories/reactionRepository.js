@@ -22,6 +22,10 @@ class ReactionRepository {
         return { emoji: r[0], userId: r[2] };
       });
   }
+
+  create(postId, userId, emoji) {
+    
+  }
 }
 
 
