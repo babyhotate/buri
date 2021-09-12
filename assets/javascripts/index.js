@@ -1,3 +1,7 @@
+fetch('http://localhost:3000/api/posts')
+        .then(response => response.json())
+        .then(data => apple(data));
+
 setInterval(() => {
     fetch('http://localhost:3000/api/posts')
         .then(response => response.json())
@@ -58,6 +62,52 @@ function apple(posts) {
 
         li.appendChild(formForEdit);
 
+        // URLが含まれていたらOGP取得して要素追加
+        if(containsURL(post['message'])) {
+            createOgpElementFor(li, post['message']);
+        }
         ulElement.appendChild(li);
     }
+};
+
+function containsURL(str) {
+    const pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+    '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
+    '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+    '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+    '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+    '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+    return !!pattern.test(str);
+};
+
+function createOgpElementFor(li, url) {
+    // サーバへ送りたいデータ
+    const data = { url: url};
+    // FetchAPIのオプション準備
+    const param  = {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json; charset=utf-8"
+    },
+    // リクエストボディ
+    body: JSON.stringify(data)
+    };
+    fetch('http://localhost:3000/api/ogp', param)
+        .then(response => response.json())
+        .then(data => {
+            const divForOgpTitle = document.createElement('div');
+            divForOgpTitle.setAttribute('id', 'ogp_title');
+            divForOgpTitle.textContent = data.ogp.title;
+            const divForOgpDes = document.createElement('div');
+            divForOgpDes.setAttribute('id', 'ogp_des');
+            divForOgpDes.textContent = data.ogp.description;
+            const imgForOgpImg = document.createElement('img');
+            imgForOgpImg.setAttribute('id', 'ogp_img');
+            imgForOgpImg.setAttribute('src', data.ogp.image);
+            imgForOgpImg.setAttribute('width', '300px');
+
+            li.appendChild(divForOgpTitle);
+            li.appendChild(divForOgpDes);
+            li.appendChild(imgForOgpImg);
+        });
 };

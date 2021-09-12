@@ -17,6 +17,12 @@ const port = 3000;
 
 const DATA_DIR_PATH = 'data';
 
+const { JSDOM } = require('jsdom');
+const fetch = require('node-fetch');
+const bodyParser = require('body-parser')
+app.use(bodyParser.urlencoded({extended: true}))
+app.use(bodyParser.json())
+
 /**
  * ポストの一覧を表示する
  */
@@ -89,6 +95,40 @@ app.get("/edit_post", (req, res) => {
   postRepository.editPost(req.query.post_id, req.query.edit_content);
   res.redirect('/');
 });
+
+app.post("/api/ogp", (req, res) => {
+  sendOgpFor(req.body.url, res);
+});
+
+function sendOgpFor(url, res) {
+    fetch(url).then(res => res.text()).then(text => {
+        const jsdom = new JSDOM();
+        const parser = new jsdom.window.DOMParser();
+        const el = parser.parseFromString(text, "text/html")
+        const headEls = (el.head.children)
+
+        const ogp = {}
+        Array.from(headEls).map(v => {
+            const prop = v.getAttribute('property')
+            if (!prop) return;
+            // console.log(prop, v.getAttribute("content"))
+            switch (prop) {
+              case 'og:title':
+                ogp.title = v.getAttribute("content");
+                break;
+              case 'og:description':
+                ogp.description = v.getAttribute("content").split("\n")[0];
+                break;
+              case 'og:image':
+                ogp.image = v.getAttribute("content");
+                break;
+              default:
+                break;
+            }
+        });
+        res.send({ ogp: ogp });
+    });
+};
 
 app.get('/kuji', (req, res) => {
   let box = ["shellzu 🍣", "nakanoh 👤", "inukawaii 🐶", "aksh-t 🫀"];
