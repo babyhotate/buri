@@ -6,7 +6,7 @@ const {
 } = require('./models/post');
 const {
   UserRepository
-} = require('./repositories/userRdbRepository');
+} = require('./repositories/userRepository');
 const {
   PostRepository
 } = require('./repositories/postRepository');

@@ -1,67 +1,35 @@
-const fs = require('fs');
 const { User } = require('../models/user');
 
+// 他のモデルも出揃ってきたらORM的な部分を抽出する？
 class UserRepository {
-  filePath;
+  static tableName = "users";
 
-  constructor(dataDirPath) {
-    this.filePath = `${dataDirPath}/users.txt`;
+  static toModel(row) {
+    return new User(row["id"], row["display_name"]);
   }
 
-  getAll() {
-    if (!fs.existsSync(this.filePath)) {
-      fs.writeFileSync(this.filePath, "");
-    }
+  static async getAll(connection) {
+    const [rows] = await connection.query(
+      `SELECT * FROM ${this.tableName}`
+    );
 
-    // データストアの全データを読み出す
-    let data = fs.readFileSync(this.filePath, 'utf-8');
-    const lines = data.split('\n').filter(value => value !== "");
-
-    return lines.map((line) => {
-      const values = line.split(',');
-      return new User(values[0], values[1]);
-    });
+    const users = rows.map(row => this.toModel(row));
+    return users;
   }
 
-  getById(id) {
-    if (!fs.existsSync(this.filePath)) {
-      fs.writeFileSync(this.filePath, "");
-    }
-
-    // データストアの全データを読み出す
-    let data = fs.readFileSync(this.filePath, 'utf-8');
-    const lines = data.split('\n').filter(value => value !== "");
-
-    // 読み出したデータをUserオブジェクトに変換し、リストに詰める
-    let users = [];
-    for (const line of lines) {
-      const values = line.split(',');
-      users.push(new User(values[0], values[1]));
-    }
-
-    // Userオブジェクトのリストから指定されたIDのユーザを探し出す
-    const user = users.find(user => user.id === id);
+  static async getById(connection, id) {
+    const [user] = await this.getByIds(connection, [id]);
     return user;
   }
 
-  getByIds(ids) {
-    if (!fs.existsSync(this.filePath)) {
-      fs.writeFileSync(this.filePath, "");
-    }
+  static async getByIds(connection, ids) {
+    const [rows] = await connection.query(
+      `SELECT * FROM ${this.tableName} WHERE id in (?)`,
+      [ids]
+    );
 
-    // データストアの全データを読み出す
-    let data = fs.readFileSync(this.filePath, 'utf-8');
-    const lines = data.split('\n').filter(value => value !== "");
-
-    // 読み出したデータをUserオブジェクトに変換し、リストに詰める
-    let users = [];
-    for (const line of lines) {
-      const values = line.split(',');
-      users.push(new User(values[0], values[1]));
-    }
-
-    // Userオブジェクトのリストから指定されたIDのユーザを探し出す
-    return users.filter(user => ids.includes(user.id));
+    const users = rows.map(row => this.toModel(row));
+    return users;
   }
 }
 
