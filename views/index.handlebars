@@ -3,14 +3,14 @@
   {{#each postList}}
     <li>
       {{this.user.displayName}}
-      <form action="/delete_post" method="get">
-        <input type="hidden" value={{@index}} id="post" name="post_id" />
-        <input type="submit" value="廃棄" />
-      </form>
-      <form action="/edit_post" method="get">
+      <form action="/edit_post" method="get" style="display: inline">
         <input type="text" name="edit_content" value="{{this.message}}" />
         <input type="hidden" value={{@index}} name="post_id" />
-        <input type="submit" value="加工" />
+        <input type="submit" value="編集" />
+      </form>
+      <form action="/delete_post" method="get" style="display: inline">
+        <input type="hidden" value={{@index}} id="post" name="post_id" />
+        <input type="submit" value="削除" />
       </form>
     </li>
   {{/each}}
@@ -30,7 +30,7 @@
     maxlength="1000"
     size="30"
   />
-  <input type="submit" value="出荷" />
+  <input type="submit" value="送信" />
 </form>
 
 <script src="/javascripts/index.js"></script>

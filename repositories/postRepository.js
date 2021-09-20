@@ -8,7 +8,7 @@ class PostRepository {
         this.filePath = `${dataDirPath}/posts.txt`;
     }
 
-    getPosts() {
+    findAll() {
         if (!fs.existsSync(this.filePath)) {
             fs.writeFileSync(this.filePath, "");
         }
@@ -19,32 +19,35 @@ class PostRepository {
 
         // 文字列のリストから、Postモデルのリストを作る
         const models = postList.map(post => {
-            const [userId, message] = post.split(",");
-            return new Post(userId, message);
+            const [userId, message, id] = post.split(",");
+            return new Post(userId, message, id);
         });
         return models;
     }
 
-    writePost(post) {
+    create(userId, message) {
+        const postList = this.findAll();
+        const latestId = postList[postList.length - 1].id;
+        const post = new Post(userId, message, Number(latestId) + 1);
         try {
-            const postList = this.getPosts();
-            // なんかよくわからないが空ファイルも、1行の空行があるように見えてしまう
-            // ので、全くの空かどうかで書き込み方を切り替える必要がある
-            if (postList.length > 0) {
-                fs.appendFileSync(this.filePath, "\n" + post.userId + "," + post.message);
-            } else {
-                fs.appendFileSync(this.filePath, post.userId + "," + post.message);
-            }
-        }
-        catch (e) {
-            console.log(e.message);
+          const postList = this.findAll();
+          // なんかよくわからないが空ファイルも、1行の空行があるように見えてしまう
+          // ので、全くの空かどうかで書き込み方を切り替える必要がある
+          if (postList.length > 0) {
+            fs.appendFileSync(this.filePath, "\n" + post.userId + "," + post.message + "," + post.id);
+          } else {
+            fs.appendFileSync(this.filePath, post.userId + "," + post.message + "," + post.id);
+          }
+        } catch (e) {
+          console.log(e.message);
         }
     }
 
-    deletePost(post_id) {
-        const postList = this.getPosts();
-        postList.splice(post_id, 1);
-        const postStringLines = postList.map((p) => p.userId + "," + p.message);
+    // @params index {Number}
+    delete(index) {
+        const postList = this.findAll();
+        postList.splice(index, 1);
+        const postStringLines = postList.map((p) => p.userId + "," + p.message + "," + p.id);
         const lines = postStringLines.join("\n");
 
         fs.writeFileSync(this.filePath, lines, function (err) {
@@ -52,11 +55,12 @@ class PostRepository {
         });
     }
 
-    editPost(post_id, edit_content) {
-        const postList = this.getPosts();
-        const editedPost = new Post(postList[post_id].userId, edit_content);
-        postList[post_id] = editedPost;
-        const postStringLines = postList.map((p) => p.userId + "," + p.message);
+    // @params index {Number}
+    update(index, edit_content) {
+        const postList = this.findAll();
+        const editedPost = new Post(postList[index].userId, edit_content, postList[index].id);
+        postList[index] = editedPost;
+        const postStringLines = postList.map((p) => p.userId + "," + p.message + "," + p.id);
         const lines = postStringLines.join("\n");
 
         fs.writeFileSync(this.filePath, lines, function (err) {
