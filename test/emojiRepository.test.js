@@ -2,9 +2,11 @@ const mysql = require("mysql2/promise");
 
 const { dbConfig } = require("../config.js");
 
+const { EmojiRepository } = require("../repositories/emojiRepository");
+
 let connection;
 
-beforeEach(() => {
+beforeEach(async () => {
   connection = await mysql.createConnection(dbConfig);
   await connection.beginTransaction();
   await connection.query(`
@@ -17,10 +19,6 @@ beforeEach(() => {
           ('good', '👍'), 
           ('dog', '🐶')
     `);
-
-  emojiRepository = new EmojiRepository(DATA_DIR_PATH);
-  // emojis.txtをテストしたい状態にする
-  fs.writeFileSync(EMOJI_FILE_PATH, ["good,👍", "dog,🐶"].join("\n"));
 });
 
 afterAll(async () => {
@@ -31,8 +29,8 @@ afterAll(async () => {
 });
 
 describe("#getAll", () => {
-  test("emoji全件が取得できる", () => {
-    const emojis = await EmojiRepository.getAll();
+  test("emoji全件が取得できる", async () => {
+    const emojis = await EmojiRepository.getAll(connection);
     expect(emojis.length).toBe(2);
     expect(emojis[0].name).toBe("good");
     expect(emojis[0].emoji).toBe("👍");
