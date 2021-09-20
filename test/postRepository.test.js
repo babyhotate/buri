@@ -12,9 +12,9 @@ beforeEach(() => {
     fs.writeFileSync(POSTS_FILE_PATH, ["user1,hoge,1", "user2,fuga,2"].join("\n"));
 });
 
-describe('#getPosts', () => {
+describe('#findAll', () => {
     test('post全件が取得できる', () => {
-        const posts = postRepository.getPosts();
+        const posts = postRepository.findAll();
         expect(posts.length).toBe(2);
         expect(posts[0].userId).toBe("user1");
         expect(posts[0].message).toBe("hoge");
@@ -25,9 +25,9 @@ describe('#getPosts', () => {
     });
 });
 
-describe("#writePost", () => {
+describe("#create", () => {
   test("1件の投稿をデータストアに書き込む", () => {
-    postRepository.writePost("user1", "piyo");
+    postRepository.create("user1", "piyo");
 
     let posts = fs.readFileSync(POSTS_FILE_PATH, "utf-8");
     posts = posts.split("\n");
@@ -35,9 +35,9 @@ describe("#writePost", () => {
   });
 });
 
-describe('#deletePost', () => {
+describe('#delete', () => {
     test('1件の投稿を削除する', () => {
-        postRepository.deletePost(1);
+        postRepository.delete(1);
 
         let posts = fs.readFileSync(POSTS_FILE_PATH, 'utf-8');
         posts = posts.split("\n");
@@ -47,9 +47,9 @@ describe('#deletePost', () => {
     });
 });
 
-describe('#editPost', () => {
+describe('#update', () => {
     test('1件の投稿を編集する', () => {
-        postRepository.editPost(1, 'fuga2');
+        postRepository.update(1, 'fuga2');
 
         let posts = fs.readFileSync(POSTS_FILE_PATH, 'utf-8');
         posts = posts.split("\n");
