@@ -15,7 +15,7 @@ beforeAll(async () => {
     `);
 
     await connection.query(`
-        INSERT INTO users (id, display_name) 
+        INSERT INTO users (user_id, display_name) 
         VALUES 
           ('user1', 'aaa'), 
           ('user2', 'bbb'), 

@@ -5,7 +5,7 @@ class UserRepository {
   static tableName = "users";
 
   static toModel(row) {
-    return new User(row["id"], row["display_name"]);
+    return new User(row["user_id"], row["display_name"]);
   }
 
   static async getAll(connection) {
@@ -24,7 +24,7 @@ class UserRepository {
 
   static async getByIds(connection, ids) {
     const [rows] = await connection.query(
-      `SELECT * FROM ${this.tableName} WHERE id in (?)`,
+      `SELECT * FROM ${this.tableName} WHERE user_id in (?)`,
       [ids]
     );
 
