@@ -9,7 +9,10 @@ beforeEach(() => {
   reactionRepository = new ReactionRepository(DATA_DIR_PATH);
   // reactions.txtをテストしたい状態にする
   // emoji Name, postId, user ID
-  fs.writeFileSync(REACTION_FILE_PATH, ["good,1,user1", "dog,1,user2", "dog,2,user1"].join("\n"));
+  fs.writeFileSync(
+    REACTION_FILE_PATH,
+    ["good,1,user1", "dog,1,user2", "dog,2,user1"].join("\n")
+  );
 });
 
 describe("#getByPostId", () => {
