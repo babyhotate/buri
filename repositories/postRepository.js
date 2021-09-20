@@ -8,7 +8,7 @@ class PostRepository {
         this.filePath = `${dataDirPath}/posts.txt`;
     }
 
-    getPosts() {
+    findAll() {
         if (!fs.existsSync(this.filePath)) {
             fs.writeFileSync(this.filePath, "");
         }
@@ -25,12 +25,12 @@ class PostRepository {
         return models;
     }
 
-    writePost(userId, message) {
-        const postList = this.getPosts();
+    create(userId, message) {
+        const postList = this.findAll();
         const latestId = postList[postList.length - 1].id;
         const post = new Post(userId, message, Number(latestId) + 1);
         try {
-          const postList = this.getPosts();
+          const postList = this.findAll();
           // なんかよくわからないが空ファイルも、1行の空行があるように見えてしまう
           // ので、全くの空かどうかで書き込み方を切り替える必要がある
           if (postList.length > 0) {
@@ -44,8 +44,8 @@ class PostRepository {
     }
 
     // @params index {Number}
-    deletePost(index) {
-        const postList = this.getPosts();
+    delete(index) {
+        const postList = this.findAll();
         postList.splice(index, 1);
         const postStringLines = postList.map((p) => p.userId + "," + p.message + "," + p.id);
         const lines = postStringLines.join("\n");
@@ -56,8 +56,8 @@ class PostRepository {
     }
 
     // @params index {Number}
-    editPost(index, edit_content) {
-        const postList = this.getPosts();
+    update(index, edit_content) {
+        const postList = this.findAll();
         const editedPost = new Post(postList[index].userId, edit_content, postList[index].id);
         postList[index] = editedPost;
         const postStringLines = postList.map((p) => p.userId + "," + p.message + "," + p.id);

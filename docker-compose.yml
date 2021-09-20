@@ -1,0 +1,18 @@
+version: "3"
+
+services:
+  db:
+    image: mysql:8.0.26
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: buri
+      MYSQL_USER: hotate
+      MYSQL_PASSWORD: baby
+
+volumes:
+  db_data:

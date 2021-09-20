@@ -1,51 +1,68 @@
+const mysql = require('mysql2/promise');
+
+const { dbConfig } = require('../config.js');
+
+const { User } = require('../models/user');
 const { UserRepository } = require('../repositories/userRepository');
-const fs = require('fs');
 
-const DATA_DIR_PATH = 'test/data';
-const USERS_FILE_PATH = `${DATA_DIR_PATH}/users.txt`;
+let connection;
 
-test('getByIdのテスト', () => {
-    const userRepository = new UserRepository(DATA_DIR_PATH);
-    const user = userRepository.getById('user2');
-    expect(user.id).toBe("user2");
-    expect(user.displayName).toBe("hamachi");
+beforeAll(async () => {
+    connection = await mysql.createConnection(dbConfig);
+    await connection.beginTransaction();
+    await connection.query(`
+        DELETE FROM users
+    `);
+
+    await connection.query(`
+        INSERT INTO users (id, display_name) 
+        VALUES 
+          ('user1', 'aaa'), 
+          ('user2', 'bbb'), 
+          ('user3', 'ccc')
+    `);
 });
 
-describe('#getByIds', () => {
-    test('userを取得できる', () => {
-        fs.writeFileSync(USERS_FILE_PATH, ["user1,hotate", "user2,hamachi"].join("\n"));
+afterAll(async () => {
+    await connection.rollback();
+    await connection.end();
+    // connectionが切れるまで少し待つ必要があるみたい
+    await new Promise(resolve => setTimeout(resolve, 10));
+});
 
-        const userRepository = new UserRepository(DATA_DIR_PATH);
-        const userIds = ["user1", "user2"];
-        const users = userRepository.getByIds(userIds);
 
-        expect(users.length).toBe(2);
-        expect(users[0].id).toBe("user1");
-        expect(users[0].displayName).toBe("hotate");
-        expect(users[1].id).toBe("user2");
-        expect(users[1].displayName).toBe("hamachi");
-    });
-    test('存在しないIdが渡されたときにエラーにならない', () => {
-        fs.writeFileSync(USERS_FILE_PATH, ["user1,hotate", "user2,hamachi"].join("\n"));
+describe("#getById", () => {
+    test("", async () => {
+        const expectUser = new User("user2", "bbb");
 
-        const userRepository = new UserRepository(DATA_DIR_PATH);
-        const userIds = ["user1", "user3"];
-        const users = userRepository.getByIds(userIds);
-
-        expect(users.length).toBe(1);
-        expect(users[0].id).toBe("user1");
-        expect(users[0].displayName).toBe("hotate");
+        const user = await UserRepository.getById(connection, "user2");
+        expect(user).toEqual(expectUser);
     });
 });
 
-describe('#getAll', () => {
-    test('Userのリストを返す', () => {
-        fs.writeFileSync(USERS_FILE_PATH, ["user1,hotate", "user2,hamachi"].join("\n"));
-        const userRepository = new UserRepository(DATA_DIR_PATH);
-        actual = userRepository.getAll();
+describe("#getByIds", () => {
+    test("userを取得できる", async () => {
+        const expectUsers = [new User("user2", "bbb"), new User("user3", "ccc")];
 
-        expect(actual.length).toBe(2);
-        expect(actual[0].id).toBe("user1");
-        expect(actual[1].id).toBe("user2");
+        const users = await UserRepository.getByIds(connection, expectUsers.map(user => user.id));
+        expect(users).toEqual(expectUsers);
+    });
+    test("存在しないIdが渡されたときにエラーにならない", async () => {
+        const expectUsers = [new User("user1", "aaa")];
+        const users = await UserRepository.getByIds(connection, ["user1", "user4"]);
+        expect(users).toEqual(expectUsers);
+    });
+});
+
+describe("#getAll", () => {
+    test("Userのリストを返す", async () => {
+        const expectUsers = [
+            new User("user1", "aaa"),
+            new User("user2", "bbb"),
+            new User("user3", "ccc"),
+        ];
+
+        const users = await UserRepository.getAll(connection);
+        expect(users).toEqual(expectUsers);
     });
 });
