@@ -40,8 +40,7 @@ app.get('/', async (req, res) => {
   const usersHasPosts = await UserRepository.getByIds(connection, userIds);
 
   const users = await UserRepository.getAll(connection);
-  const emojiRepository = new EmojiRepository(DATA_DIR_PATH);
-  const emojis = emojiRepository.getAll();
+  const emojis = await EmojiRepository.getAll(connection);
 
   res.render("index", {
     postList: postList.map(post => ({

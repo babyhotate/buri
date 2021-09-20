@@ -2,27 +2,17 @@ const fs = require("fs");
 const { Emoji } = require("../models/emoji");
 
 class EmojiRepository {
-  filePath;
+  static tableName = "emojis";
 
-  constructor(dataDirPath) {
-    this.filePath = `${dataDirPath}/emojis.txt`;
+  static toModel(row) {
+    return new Emoji(row["name"], row["emoji"]);
   }
 
-  getAll() {
-    if (!fs.existsSync(this.filePath)) {
-      fs.writeFileSync(this.filePath, "");
-    }
-    let emojis = fs.readFileSync(this.filePath, "utf-8");
+  static async getAll(connection) {
+    const [rows] = await connection.query(`SELECT * FROM ${this.tableName}`);
 
-    // ["", "aaa", ""] => ["aaa"]
-    const emojiList = emojis.split("\n").filter((value) => value !== "");
-
-    // 文字列のリストから、Emojiモデルのリストを作る
-    const models = emojiList.map((e) => {
-      const [name, emoji] = e.split(",");
-      return new Emoji(name, emoji);
-    });
-    return models;
+    const emojis = rows.map((row) => this.toModel(row));
+    return emojis;
   }
 }
 
