@@ -1,3 +1,7 @@
+const mysql = require("mysql2/promise");
+
+const { dbConfig } = require("../config.js");
+
 const { PostRepository } = require("../repositories/postRepository");
 const { Post } = require("../models/post");
 const fs = require("fs");
@@ -6,6 +10,40 @@ const DATA_DIR_PATH = "test/data";
 const POSTS_FILE_PATH = `${DATA_DIR_PATH}/posts.txt`;
 
 let postRepository;
+
+let connection;
+
+beforeAll(async () => {
+  connection = await mysql.createConnection(dbConfig);
+  await connection.beginTransaction();
+  await connection.query(`
+        DELETE FROM users
+    `);
+  await connection.query(`
+    INSERT INTO users (id, user_id, display_name) 
+    VALUES 
+    (1, 'user1', 'aaa'), 
+    (2, 'user2', 'bbb'), 
+    (3, 'user3', 'ccc')
+    `);
+  await connection.query(`
+          DELETE FROM posts
+      `);
+  await connection.query(`
+          INSERT INTO posts (user_id, message) 
+          VALUES 
+            (1, 'hoge'), 
+            (2, 'fuga')
+      `);
+});
+
+afterAll(async () => {
+  await connection.rollback();
+  await connection.end();
+  // connectionが切れるまで少し待つ必要があるみたい
+  await new Promise((resolve) => setTimeout(resolve, 10));
+});
+
 beforeEach(() => {
   postRepository = new PostRepository(DATA_DIR_PATH);
   // posts.txtをテストしたい状態にする
