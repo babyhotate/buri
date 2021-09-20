@@ -1,20 +1,38 @@
-const { EmojiRepository } = require("../repositories/emojiRepository");
-const { Emoji } = require("../models/emoji");
-const fs = require("fs");
+const mysql = require("mysql2/promise");
 
-const DATA_DIR_PATH = "test/data";
-const EMOJI_FILE_PATH = `${DATA_DIR_PATH}/emojis.txt`;
+const { dbConfig } = require("../config.js");
 
-let emojiRepository;
+let connection;
+
 beforeEach(() => {
+  connection = await mysql.createConnection(dbConfig);
+  await connection.beginTransaction();
+  await connection.query(`
+        DELETE FROM emojis
+    `);
+
+  await connection.query(`
+        INSERT INTO emojis (name, emoji) 
+        VALUES 
+          ('good', '👍'), 
+          ('dog', '🐶')
+    `);
+
   emojiRepository = new EmojiRepository(DATA_DIR_PATH);
   // emojis.txtをテストしたい状態にする
   fs.writeFileSync(EMOJI_FILE_PATH, ["good,👍", "dog,🐶"].join("\n"));
 });
 
+afterAll(async () => {
+  await connection.rollback();
+  await connection.end();
+  // connectionが切れるまで少し待つ必要があるみたい
+  await new Promise((resolve) => setTimeout(resolve, 10));
+});
+
 describe("#getAll", () => {
   test("emoji全件が取得できる", () => {
-    const emojis = emojiRepository.getAll();
+    const emojis = await EmojiRepository.getAll();
     expect(emojis.length).toBe(2);
     expect(emojis[0].name).toBe("good");
     expect(emojis[0].emoji).toBe("👍");
