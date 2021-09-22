@@ -20,15 +20,15 @@ class PostRepository {
     // 文字列のリストから、Postモデルのリストを作る
     const models = postList.map((post) => {
       const [userId, message, id] = post.split(",");
-      return new Post(userId, message, id);
+      return new Post({ userId, message, id });
     });
     return models;
   }
 
   create(userId, message) {
     const postList = this.findAll();
-    const latestId = postList[postList.length - 1].id;
-    const post = new Post(userId, message, Number(latestId) + 1);
+    const id = Number(postList[postList.length - 1].id) + 1;
+    const post = new Post({ userId, message, id });
     try {
       const postList = this.findAll();
       // なんかよくわからないが空ファイルも、1行の空行があるように見えてしまう
@@ -66,13 +66,11 @@ class PostRepository {
   }
 
   // @params index {Number}
-  update(index, edit_content) {
+  update(index, message) {
     const postList = this.findAll();
-    const editedPost = new Post(
-      postList[index].userId,
-      edit_content,
-      postList[index].id
-    );
+    const userId = postList[index].userId;
+    const id = Number(postList[index].id);
+    const editedPost = new Post({ userId, message, id });
     postList[index] = editedPost;
     const postStringLines = postList.map(
       (p) => p.userId + "," + p.message + "," + p.id
