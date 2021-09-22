@@ -2,9 +2,6 @@ const mysql = require('mysql2/promise');
 const { dbConfig } = require('./config.js');
 
 const {
-  Post
-} = require('./models/post');
-const {
   UserRepository
 } = require('./repositories/userRepository');
 const {
@@ -32,8 +29,7 @@ let connection;
  * ポストの一覧を表示する
  */
 app.get('/', async (req, res) => {
-  const postRepository = new PostRepository(DATA_DIR_PATH);
-  const postList = postRepository.findAll();
+  const postList = await PostRepository.findAll(connection);
   const userIds = postList.map(post => post.userId);
 
   const usersHasPosts = await UserRepository.getByUserIds(connection, userIds);
@@ -53,8 +49,7 @@ app.get('/', async (req, res) => {
  * 最新のポスト一覧をJSONで返す
  */
 app.get('/api/posts', async (req, res) => {
-  const postRepository = new PostRepository(DATA_DIR_PATH);
-  const postList = postRepository.findAll();
+  const postList = await PostRepository.findAll(connection);
   const userIds = postList.map(post => post.userId);
 
   const usersHasPosts = await UserRepository.getByUserIds(connection, userIds);
@@ -73,30 +68,31 @@ app.get('/api/posts', async (req, res) => {
  * ポストを追加する
  * e.g. /add_post?user=user1&post=buri
  */
-app.get('/add_post', (req, res) => {
-  const postRepository = new PostRepository(DATA_DIR_PATH);
-  postRepository.create(req.query.user, req.query.post);
-  res.redirect('/');
+app.get("/add_post", async (req, res) => {
+  await PostRepository.create(connection, req.query.user, req.query.post);
+  res.redirect("/");
 });
 
 /**
  * ポストを削除する
  * e.g. /delete_post?post_id=1
  */
-app.get('/delete_post', (req, res) => {
-  const postRepository = new PostRepository(DATA_DIR_PATH);
-  postRepository.delete(req.query.post_id);
-  res.redirect('/');
+app.get("/delete_post", async (req, res) => {
+  await PostRepository.delete(connection, req.query.post_id);
+  res.redirect("/");
 });
 
 /**
  * ポストを編集する
  * e.g. /edit_post?post_id=1&edit_content=buri2
  */
-app.get("/edit_post", (req, res) => {
-  const postRepository = new PostRepository(DATA_DIR_PATH);
-  postRepository.update(req.query.post_id, req.query.edit_content);
-  res.redirect('/');
+app.get("/edit_post", async (req, res) => {
+  await PostRepository.update(
+    connection,
+    req.query.post_id,
+    req.query.edit_content
+  );
+  res.redirect("/");
 });
 
 app.get('/kuji', (req, res) => {
