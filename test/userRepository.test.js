@@ -31,25 +31,25 @@ afterAll(async () => {
 });
 
 
-describe("#getById", () => {
+describe("#getByUserId", () => {
     test("", async () => {
         const expectUser = new User(2, "user2", "bbb");
 
-        const user = await UserRepository.getById(connection, "user2");
+        const user = await UserRepository.getByUserId(connection, "user2");
         expect(user).toEqual(expectUser);
     });
 });
 
-describe("#getByIds", () => {
+describe("#getByUserIds", () => {
     test("userを取得できる", async () => {
         const expectUsers = [new User(2, "user2", "bbb"), new User(3, "user3", "ccc")];
 
-        const users = await UserRepository.getByIds(connection, expectUsers.map(user => user.id));
+        const users = await UserRepository.getByUserIds(connection, expectUsers.map(user => user.id));
         expect(users).toEqual(expectUsers);
     });
     test("存在しないIdが渡されたときにエラーにならない", async () => {
         const expectUsers = [new User(1, "user1", "aaa")];
-        const users = await UserRepository.getByIds(connection, ["user1", "user4"]);
+        const users = await UserRepository.getByUserIds(connection, ["user1", "user4"]);
         expect(users).toEqual(expectUsers);
     });
 });
