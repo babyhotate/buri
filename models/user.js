@@ -1,10 +1,12 @@
 class User {
-  id
-  displayName
+  id;
+  record_id;
+  displayName;
 
-  constructor(id, displayName) {
-    this.id = id
-    this.displayName = displayName
+  constructor(record_id, id, displayName) {
+    this.record_id = record_id;
+    this.id = id;
+    this.displayName = displayName;
   }
 }
 

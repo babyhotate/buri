@@ -5,7 +5,7 @@ class UserRepository {
   static tableName = "users";
 
   static toModel(row) {
-    return new User(row["user_id"], row["display_name"]);
+    return new User(row["id"], row["user_id"], row["display_name"]);
   }
 
   static async getAll(connection) {
