@@ -44,7 +44,7 @@ describe("#getByUserIds", () => {
     test("userを取得できる", async () => {
         const expectUsers = [new User(2, "user2", "bbb"), new User(3, "user3", "ccc")];
 
-        const users = await UserRepository.getByUserIds(connection, expectUsers.map(user => user.id));
+        const users = await UserRepository.getByUserIds(connection, expectUsers.map(user => user.user_id));
         expect(users).toEqual(expectUsers);
     });
     test("存在しないIdが渡されたときにエラーにならない", async () => {
