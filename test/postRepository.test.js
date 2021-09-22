@@ -16,9 +16,7 @@ let connection;
 beforeAll(async () => {
   connection = await mysql.createConnection(dbConfig);
   await connection.beginTransaction();
-  await connection.query(`
-        DELETE FROM users
-    `);
+  await connection.query(`DELETE FROM users`);
   await connection.query(`
     INSERT INTO users (id, user_id, display_name) 
     VALUES 
@@ -26,15 +24,13 @@ beforeAll(async () => {
     (2, 'user2', 'bbb'), 
     (3, 'user3', 'ccc')
     `);
+  await connection.query(`DELETE FROM posts`);
   await connection.query(`
-          DELETE FROM posts
-      `);
-  await connection.query(`
-          INSERT INTO posts (user_id, message) 
-          VALUES 
-            (1, 'hoge'), 
-            (2, 'fuga')
-      `);
+    INSERT INTO posts (id, user_id, message) 
+      VALUES 
+      (1, 1, 'hoge'), 
+      (2, 2, 'fuga')
+    `);
 });
 
 afterAll(async () => {
