@@ -10,9 +10,8 @@ let connection;
 beforeAll(async () => {
   connection = await mysql.createConnection(dbConfig);
   await connection.beginTransaction();
-  await connection.query(`
-        DELETE FROM users
-    `);
+  await connection.query(`DELETE FROM posts`);
+  await connection.query(`DELETE FROM users`);
 
   await connection.query(`
         INSERT INTO users (id, user_id, display_name) 

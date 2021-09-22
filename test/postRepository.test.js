@@ -6,9 +6,14 @@ const { PostRepository } = require("../repositories/postRepository");
 
 let connection;
 
-beforeEach(async () => {
+
+beforeAll(async () => {
   connection = await mysql.createConnection(dbConfig);
   await connection.beginTransaction();
+})
+
+beforeEach(async () => {
+  await connection.query(`DELETE FROM posts`);
   await connection.query(`DELETE FROM users`);
   await connection.query(`
     INSERT INTO users (id, user_id, display_name) 
@@ -17,7 +22,6 @@ beforeEach(async () => {
     (2, 'user2', 'bbb'), 
     (3, 'user3', 'ccc')
     `);
-  await connection.query(`DELETE FROM posts`);
   await connection.query(`
     INSERT INTO posts (id, user_id, message) 
       VALUES 
@@ -26,7 +30,7 @@ beforeEach(async () => {
     `);
 });
 
-afterEach(async () => {
+afterAll(async () => {
   await connection.rollback();
   await connection.end();
   // connectionが切れるまで少し待つ必要があるみたい
