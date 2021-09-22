@@ -23,6 +23,9 @@ class UserRepository {
   }
 
   static async getByUserIds(connection, userIds) {
+    if (userIds.length < 1) {
+      return [];
+    }
     const [rows] = await connection.query(
       `SELECT * FROM ${this.tableName} WHERE user_id in (?)`,
       [userIds]
