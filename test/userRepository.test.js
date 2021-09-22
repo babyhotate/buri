@@ -38,6 +38,31 @@ describe("#getByUserId", () => {
   });
 });
 
+describe("#getByIds", () => {
+  test("userを取得できる", async () => {
+    const expectUsers = [
+      new User({ id: 2, userId: "user2", displayName: "bbb" }),
+      new User({ id: 3, userId: "user3", displayName: "ccc" }),
+    ];
+
+    const users = await UserRepository.getByIds(
+      connection,
+      expectUsers.map((user) => user.id)
+    );
+    expect(users).toEqual(expectUsers);
+  });
+  test("存在しないIdが渡されたときにエラーにならない", async () => {
+    const expectUsers = [
+      new User({ id: 1, userId: "user1", displayName: "aaa" }),
+    ];
+    const users = await UserRepository.getByIds(connection, [
+      1,
+      4,
+    ]);
+    expect(users).toEqual(expectUsers);
+  });
+});
+
 describe("#getByUserIds", () => {
   test("userを取得できる", async () => {
     const expectUsers = [

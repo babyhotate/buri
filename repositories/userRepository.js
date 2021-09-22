@@ -36,6 +36,19 @@ class UserRepository {
     const users = rows.map((row) => this.toModel(row));
     return users;
   }
+
+  static async getByIds(connection, ids) {
+    if (ids.length < 1) {
+      return [];
+    }
+    const [rows] = await connection.query(
+      `SELECT * FROM ${this.tableName} WHERE id in (?)`,
+      [ids]
+    );
+
+    const users = rows.map((row) => this.toModel(row));
+    return users;
+  }
 }
 
 module.exports.UserRepository = UserRepository;

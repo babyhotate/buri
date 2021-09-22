@@ -32,7 +32,7 @@ app.get('/', async (req, res) => {
   const postList = await PostRepository.findAll(connection);
   const userIds = postList.map(post => post.userId);
 
-  const usersHasPosts = await UserRepository.getByUserIds(connection, userIds);
+  const usersHasPosts = await UserRepository.getByIds(connection, userIds);
 
   const users = await UserRepository.getAll(connection);
 
@@ -52,7 +52,7 @@ app.get('/api/posts', async (req, res) => {
   const postList = await PostRepository.findAll(connection);
   const userIds = postList.map(post => post.userId);
 
-  const usersHasPosts = await UserRepository.getByUserIds(connection, userIds);
+  const usersHasPosts = await UserRepository.getByIds(connection, userIds);
 
   // このJSONにuser.displayNameも含める
   res.json({
