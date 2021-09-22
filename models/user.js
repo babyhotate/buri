@@ -3,7 +3,7 @@ class User {
   id;
   displayName;
 
-  constructor(id, userId, displayName) {
+  constructor({ id, userId, displayName }) {
     this.id = id;
     this.userId = userId;
     this.displayName = displayName;
