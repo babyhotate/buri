@@ -1,87 +1,51 @@
-const fs = require("fs");
 const { Post } = require("../models/post");
 
 class PostRepository {
-  filePath;
-
-  constructor(dataDirPath) {
-    this.filePath = `${dataDirPath}/posts.txt`;
+  static toModel(record) {
+    const id = record["id"];
+    const message = record["message"];
+    const userId = record["user_id"];
+    return new Post({ id, message, userId });
   }
 
-  findAll() {
-    if (!fs.existsSync(this.filePath)) {
-      fs.writeFileSync(this.filePath, "");
-    }
-    let posts = fs.readFileSync(this.filePath, "utf-8");
-
-    // ["", "aaa", ""] => ["aaa"]
-    const postList = posts.split("\n").filter((value) => value !== "");
-
-    // 文字列のリストから、Postモデルのリストを作る
-    const models = postList.map((post) => {
-      const [userId, message, id] = post.split(",");
-      return new Post({ userId, message, id });
-    });
-    return models;
+  static async findAll(connection) {
+    const [records] = await connection.query(`SELECT * FROM posts`);
+    const posts = records.map((row) => this.toModel(row));
+    return posts;
   }
 
-  create(userId, message) {
-    const postList = this.findAll();
-    const id = Number(postList[postList.length - 1].id) + 1;
-    const post = new Post({ userId, message, id });
+  static async create(connection, userId, message) {
     try {
-      const postList = this.findAll();
-      // なんかよくわからないが空ファイルも、1行の空行があるように見えてしまう
-      // ので、全くの空かどうかで書き込み方を切り替える必要がある
-      if (postList.length > 0) {
-        fs.appendFileSync(
-          this.filePath,
-          "\n" + post.userId + "," + post.message + "," + post.id
-        );
-      } else {
-        fs.appendFileSync(
-          this.filePath,
-          post.userId + "," + post.message + "," + post.id
-        );
-      }
+      await connection.query(`
+        INSERT INTO posts (user_id, message) 
+          VALUES 
+          (${userId}, "${message}")
+        `);
+    } catch (e) {
+      console.log(e.message);
+    }
+  }
+
+  // @params id {Number}
+  static async delete(connection, id) {
+    try {
+      await connection.query(`DELETE FROM posts where id = ${id}`);
     } catch (e) {
       console.log(e.message);
     }
   }
 
   // @params index {Number}
-  delete(index) {
-    const postList = this.findAll();
-    postList.splice(index, 1);
-    const postStringLines = postList.map(
-      (p) => p.userId + "," + p.message + "," + p.id
-    );
-    const lines = postStringLines.join("\n");
-
-    fs.writeFileSync(this.filePath, lines, function (err) {
-      if (err) {
-        throw err;
-      }
-    });
-  }
-
-  // @params index {Number}
-  update(index, message) {
-    const postList = this.findAll();
-    const userId = postList[index].userId;
-    const id = Number(postList[index].id);
-    const editedPost = new Post({ userId, message, id });
-    postList[index] = editedPost;
-    const postStringLines = postList.map(
-      (p) => p.userId + "," + p.message + "," + p.id
-    );
-    const lines = postStringLines.join("\n");
-
-    fs.writeFileSync(this.filePath, lines, function (err) {
-      if (err) {
-        throw err;
-      }
-    });
+  static async update(connection, id, message) {
+    try {
+      await connection.query(`
+        UPDATE posts
+          SET message = "${message}"
+          WHERE id = ${id}
+      `);
+    } catch (e) {
+      console.log(e.message);
+    }
   }
 }
 
