@@ -71,6 +71,25 @@ app.get('/add_post', (req, res) => {
 });
 
 /**
+ * ポストを追加するAPI
+ */
+ app.post('/api/posts', (req, res) => {
+  if (req.query.user && req.query.post) {
+    const postRepository = new PostRepository(DATA_DIR_PATH);
+    postRepository.writePost(new Post(req.query.user, req.query.post));
+    res.status(200);
+    res.json({
+    success:true
+  });
+  } else {
+    res.status(400);
+    res.json({
+      success:false
+    });
+  }
+});
+
+/**
  * ポストを削除する
  * e.g. /delete_post?post_id=1
  */
