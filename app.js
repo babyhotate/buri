@@ -27,6 +27,12 @@ let connection;
   connection = await mysql.createConnection(dbConfig);
 })();
 
+/**
+ * ポストの一覧を表示する(React版サンプル)
+ */
+ app.get('/react-sample', async (req, res) => {
+  res.render("react-sample");
+});
 
 /**
  * ポストの一覧を表示する
