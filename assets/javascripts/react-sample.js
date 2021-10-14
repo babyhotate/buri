@@ -14,13 +14,13 @@ class Posts extends React.Component {
   }
 
   handleEditClick = (e) => {
-    // 投稿更新APIを実行する
+    // TODO 投稿更新APIを実行する
     // postsを再取得する
     console.log('Edit: ', e.currentTarget.getAttribute('data-post'))
   }
 
   handleDeleteClick = (e) => {
-    // 投稿削除APIを実行する
+    // TODO 投稿削除APIを実行する
     // postsを再取得する
     console.log('Delete: ', e.currentTarget.getAttribute('data-post'))
   }
@@ -41,8 +41,9 @@ class Posts extends React.Component {
 class Input extends React.Component {
   constructor(props) {
     super(props);
+    // TODO ユーザ一覧取得APIを実行してthis.state.usersに設定する
     this.state = { 
-      users: [{id: 1, displayName: 'tanaka'}, {id: 2, displayName: 'suzuki'}],
+      users: [{id: 1, displayName: 'tanaka'}, {id: 2, displayName: 'suzuki'}], //仮データ
       inputUserId: '',
       inputValue: ''
     };
@@ -60,7 +61,7 @@ class Input extends React.Component {
 
   handleSend = (e) => {
     console.log(this.state)
-    // 投稿追加APIを実行する
+    // TODO 投稿追加APIを実行する
     // Postsを再レンダリングする（？）
   }
 
@@ -94,5 +95,3 @@ ReactDOM.render(e(Posts), postsDomContainer);
 
 const inputDomContainer = document.querySelector('#input');
 ReactDOM.render(e(Input), inputDomContainer);
-
-//MEMO: Reactチュートのソース見て、今の実装正しいか確認する
