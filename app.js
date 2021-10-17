@@ -11,6 +11,7 @@ const {
 const handlebars = require('express-handlebars');
 const express = require('express');
 const app = express();
+app.use(express.json())
 app.engine('handlebars', handlebars());
 app.set("view engine", "handlebars");
 const port = 3000;
@@ -74,10 +75,9 @@ app.get('/add_post', (req, res) => {
  * ポストを追加するAPI
  */
  app.post('/api/posts', (req, res) => {
-  if (req.query.user && req.query.post) {
+  if (req.body.user && req.body.post) {
     const postRepository = new PostRepository(DATA_DIR_PATH);
-    postRepository.writePost(new Post(req.query.user, req.query.post));
-    res.status(200);
+    postRepository.writePost(new Post(req.body.user, req.body.post));
     res.json({
     success:true
   });
