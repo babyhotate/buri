@@ -2,16 +2,16 @@ const { Post } = require("../models/post");
 
 class PostRepository {
   static tableName = "posts";
-  static toModel(record) {
-    const id = record["id"];
-    const message = record["message"];
-    const userId = record["user_id"];
+  static toModel(row) {
+    const id = row["id"];
+    const message = row["message"];
+    const userId = row["user_id"];
     return new Post({ id, message, userId });
   }
 
   static async findAll(connection) {
-    const [records] = await connection.query(`SELECT * FROM ${this.tableName}`);
-    const posts = records.map((row) => this.toModel(row));
+    const [rows] = await connection.query(`SELECT * FROM ${this.tableName}`);
+    const posts = rows.map((row) => this.toModel(row));
     return posts;
   }
 
