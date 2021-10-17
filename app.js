@@ -1,3 +1,6 @@
+const mysql = require("mysql2/promise");
+const { dbConfig } = require("./config.js");
+
 const { Post } = require("./models/post");
 const { UserRepository } = require("./repositories/userRepository");
 const { PostRepository } = require("./repositories/postRepository");
@@ -12,18 +15,24 @@ const port = 3000;
 
 const DATA_DIR_PATH = "data";
 
+// CAUTION: ごく稀にDB接続が間に合わなくてエラーになるかも
+// 上記問題を解消するためにTop-Level awaitを使いたいが、CommonJSではなくESModulesに変更する必要がある
+let connection;
+(async () => {
+  connection = await mysql.createConnection(dbConfig);
+})();
+
 /**
  * ポストの一覧を表示する
  */
-app.get("/", (req, res) => {
+app.get("/", async (req, res) => {
   const postRepository = new PostRepository(DATA_DIR_PATH);
-  const postList = postRepository.getPosts();
+  const postList = postRepository.findAll();
   const userIds = postList.map((post) => post.userId);
 
-  const userRepository = new UserRepository(DATA_DIR_PATH);
-  const usersHasPosts = userRepository.getByIds(userIds);
+  const usersHasPosts = await UserRepository.getByIds(connection, userIds);
 
-  const users = userRepository.getAll();
+  const users = await UserRepository.getAll(connection);
 
   res.render("index", {
     postList: postList.map((post) => ({
@@ -37,13 +46,12 @@ app.get("/", (req, res) => {
 /**
  * 最新のポスト一覧をJSONで返す
  */
-app.get("/api/posts", (req, res) => {
+app.get("/api/posts", async (req, res) => {
   const postRepository = new PostRepository(DATA_DIR_PATH);
-  const postList = postRepository.getPosts();
+  const postList = postRepository.findAll();
   const userIds = postList.map((post) => post.userId);
 
-  const userRepository = new UserRepository(DATA_DIR_PATH);
-  const usersHasPosts = userRepository.getByIds(userIds);
+  const usersHasPosts = await UserRepository.getByIds(connection, userIds);
 
   // このJSONにuser.displayNameも含める
   res.json({
@@ -60,7 +68,7 @@ app.get("/api/posts", (req, res) => {
  */
 app.get("/add_post", (req, res) => {
   const postRepository = new PostRepository(DATA_DIR_PATH);
-  postRepository.writePost(new Post(req.query.user, req.query.post));
+  postRepository.create(req.query.user, req.query.post);
   res.redirect("/");
 });
 
@@ -88,7 +96,7 @@ app.post("/api/posts", (req, res) => {
  */
 app.get("/delete_post", (req, res) => {
   const postRepository = new PostRepository(DATA_DIR_PATH);
-  postRepository.deletePost(req.query.post_id);
+  postRepository.delete(req.query.post_id);
   res.redirect("/");
 });
 
@@ -98,7 +106,7 @@ app.get("/delete_post", (req, res) => {
  */
 app.get("/edit_post", (req, res) => {
   const postRepository = new PostRepository(DATA_DIR_PATH);
-  postRepository.editPost(req.query.post_id, req.query.edit_content);
+  postRepository.update(req.query.post_id, req.query.edit_content);
   res.redirect("/");
 });
 
