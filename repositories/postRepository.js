@@ -1,6 +1,7 @@
 const { Post } = require("../models/post");
 
 class PostRepository {
+  static tableName = "posts";
   static toModel(record) {
     const id = record["id"];
     const message = record["message"];
@@ -9,7 +10,7 @@ class PostRepository {
   }
 
   static async findAll(connection) {
-    const [records] = await connection.query(`SELECT * FROM posts`);
+    const [records] = await connection.query(`SELECT * FROM ${this.tableName}`);
     const posts = records.map((row) => this.toModel(row));
     return posts;
   }
@@ -17,7 +18,7 @@ class PostRepository {
   static async create(connection, userId, message) {
     try {
       await connection.query(`
-        INSERT INTO posts (user_id, message) 
+        INSERT INTO ${this.tableName} (user_id, message) 
           VALUES 
           (${userId}, "${message}")
         `);
@@ -29,7 +30,7 @@ class PostRepository {
   // @params id {Number}
   static async delete(connection, id) {
     try {
-      await connection.query(`DELETE FROM posts where id = ${id}`);
+      await connection.query(`DELETE FROM ${this.tableName} where id = ${id}`);
     } catch (e) {
       console.log(e.message);
     }
@@ -39,7 +40,7 @@ class PostRepository {
   static async update(connection, id, message) {
     try {
       await connection.query(`
-        UPDATE posts
+        UPDATE ${this.tableName}
           SET message = "${message}"
           WHERE id = ${id}
       `);
