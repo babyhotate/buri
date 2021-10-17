@@ -119,7 +119,7 @@ app.post("/api/ogp", (req, res) => {
     Array.from(headEls).map(v => {
         const prop = v.getAttribute('property')
         if (!prop) return;
-        // console.log(prop, v.getAttribute("content"))
+        
         switch (prop) {
           case 'og:title':
             ogp.title = v.getAttribute("content");
