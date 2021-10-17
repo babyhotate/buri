@@ -64,7 +64,7 @@ app.get('/api/posts', async (req, res) => {
  * ポストを追加する
  * e.g. /add_post?user=user1&post=buri
  */
-app.get("/add_post", (req, res) => {
+app.get("/add_post", async (req, res) => {
   await PostRepository.create(connection, req.query.user, req.query.post);
   res.redirect("/");
 });
@@ -72,7 +72,7 @@ app.get("/add_post", (req, res) => {
 /**
  * ポストを追加するAPI
  */
-app.post("/api/posts", (req, res) => {
+app.post("/api/posts", async (req, res) => {
   if (!(req.body.user && req.body.post)) {
     res.status(400);
     res.json({
