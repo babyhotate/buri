@@ -80,8 +80,7 @@ app.post("/api/posts", async (req, res) => {
     });
     return;
   }
-  const postRepository = new PostRepository(DATA_DIR_PATH);
-  postRepository.writePost(new Post(req.body.user, req.body.post));
+  await PostRepository.create(connection, req.query.user, req.query.post);
   res.json({
     success: true,
   });
