@@ -4,24 +4,44 @@ class Posts extends React.Component {
   constructor(props) {
     super(props);
     this.state = { posts: []};
+
     fetch('http://localhost:3000/api/posts')
-        .then(response => response.json())
-        .then(data => {
-          // console.log(data.posts);
-          this.setState({posts: data.posts});
-        });
-    console.log(new Date().getTime())
+      .then(response => response.json())
+      .then(data => {
+        // console.log(data.posts);
+        this.setState({posts: data.posts});
+      })
+      .catch(error => console.log(error));
   }
 
   handleEditClick = (e) => {
-    // TODO 投稿更新APIを実行する
-    // postsを再取得する
+    // TODO 投稿更新APIを実行する（仮実装。IF決まり次第合わせる。）
+    // fetch('http://localhost:3000/api/posts', {
+    //     method: "POST",
+    //     body: {
+    //       postId: e.currentTarget.getAttribute('data-post').id,
+    //       postMessage: e.currentTarget.getAttribute('data-post').message
+    //     }
+    //   })
+    //   .then(response => console.log(response.data.success))
+    //   .catch(error => console.log(error));
+
+    // postsを再取得する?
     console.log('Edit: ', e.currentTarget.getAttribute('data-post'))
   }
 
   handleDeleteClick = (e) => {
-    // TODO 投稿削除APIを実行する
-    // postsを再取得する
+    // TODO 投稿削除APIを実行する（仮実装。IF決まり次第合わせる。）
+    // fetch('http://localhost:3000/api/posts', {
+    //     method: "DELETE",
+    //     body: {
+    //       postId: e.currentTarget.getAttribute('data-post').id
+    //     }
+    //   })
+    //   .then(response => console.log(response.data.success))
+    //   .catch(error => console.log(error));
+
+    // postsを再取得する?
     console.log('Delete: ', e.currentTarget.getAttribute('data-post'))
   }
 
@@ -41,7 +61,14 @@ class Posts extends React.Component {
 class Input extends React.Component {
   constructor(props) {
     super(props);
-    // TODO ユーザ一覧取得APIを実行してthis.state.usersに設定する
+    // TODO ユーザ一覧取得APIを実行してthis.state.usersに設定する（仮実装。IF決まり次第合わせる。）
+    // fetch('http://localhost:3000/api/users')
+    //   .then(response => response.json())
+    //   .then(data => {
+    //     this.setState({users: data.users});
+    //   })
+    //   .catch(error => console.log(error));
+
     this.state = { 
       users: [{id: 1, displayName: 'tanaka'}, {id: 2, displayName: 'suzuki'}], //仮データ
       inputUserId: '',
@@ -61,7 +88,16 @@ class Input extends React.Component {
 
   handleSend = (e) => {
     console.log(this.state)
-    // TODO 投稿追加APIを実行する
+    // TODO 投稿追加APIを実行する（仮実装。IF決まり次第合わせる。）
+    // fetch('http://localhost:3000/api/posts', {
+    //   method: "POST",
+    //   body: {
+    //     userId: this.state.inputUserId,
+    //     postMessage: this.state.inputValue
+    //   }
+    // })
+    //   .then(response => console.log(response.data.success))
+    //   .catch(error => console.log(error));
     // Postsを再レンダリングする（？）
   }
 
