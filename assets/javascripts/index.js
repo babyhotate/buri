@@ -1,8 +1,8 @@
-setInterval(() => {
-    fetch('http://localhost:3000/api/posts')
-        .then(response => response.json())
-        .then(data => apple(data));
-}, 5000);
+// setInterval(() => {
+//     fetch('http://localhost:3000/api/posts')
+//         .then(response => response.json())
+//         .then(data => apple(data));
+// }, 5000);
 
 // TODO: 関数の仕事が決まったら変えること
 function apple(posts) {
