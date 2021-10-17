@@ -16,37 +16,25 @@ class PostRepository {
   }
 
   static async create(connection, userId, message) {
-    try {
-      await connection.execute(
-        `INSERT INTO ${this.tableName} (user_id, message) VALUES (?, ?)`,
-        [userId, message],
-        function (err, results, fields) {}
-      );
-    } catch (e) {
-      console.log(e.message);
-    }
+    await connection.execute(
+      `INSERT INTO ${this.tableName} (user_id, message) VALUES (?, ?)`,
+      [userId, message],
+      function (err, results, fields) {}
+    );
   }
 
   // @params id {Number}
   static async delete(connection, id) {
-    try {
-      await connection.query(`DELETE FROM ${this.tableName} where id = ${id}`);
-    } catch (e) {
-      console.log(e.message);
-    }
+    await connection.query(`DELETE FROM ${this.tableName} where id = ${id}`);
   }
 
   // @params index {Number}
   static async update(connection, id, message) {
-    try {
-      await connection.query(`
-        UPDATE ${this.tableName}
-          SET message = "${message}"
-          WHERE id = ${id}
-      `);
-    } catch (e) {
-      console.log(e.message);
-    }
+    await connection.query(`
+      UPDATE ${this.tableName}
+        SET message = "${message}"
+        WHERE id = ${id}
+    `);
   }
 }
 
