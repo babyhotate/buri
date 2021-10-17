@@ -35,6 +35,11 @@ class PostRepository {
         SET message = "${message}"
         WHERE id = ${id}
     `);
+    await connection.execute(
+      `UPDATE ${this.tableName} SET message = ? WHERE id = ?`,
+      [message, id],
+      function (err, results, fields) {}
+    );
   }
 }
 
