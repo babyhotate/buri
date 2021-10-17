@@ -17,11 +17,11 @@ class PostRepository {
 
   static async create(connection, userId, message) {
     try {
-      await connection.query(`
-        INSERT INTO ${this.tableName} (user_id, message) 
-          VALUES 
-          (${userId}, "${message}")
-        `);
+      await connection.execute(
+        `INSERT INTO ${this.tableName} (user_id, message) VALUES (?, ?)`,
+        [userId, message],
+        function (err, results, fields) {}
+      );
     } catch (e) {
       console.log(e.message);
     }
