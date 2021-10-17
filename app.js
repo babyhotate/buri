@@ -75,18 +75,18 @@ app.get('/add_post', (req, res) => {
  * ポストを追加するAPI
  */
  app.post('/api/posts', (req, res) => {
-  if (req.body.user && req.body.post) {
-    const postRepository = new PostRepository(DATA_DIR_PATH);
-    postRepository.writePost(new Post(req.body.user, req.body.post));
-    res.json({
-    success:true
-  });
-  } else {
+  if (!(req.body.user && req.body.post)) {
     res.status(400);
     res.json({
       success:false
     });
-  }
+    return
+  };
+  const postRepository = new PostRepository(DATA_DIR_PATH);
+  postRepository.writePost(new Post(req.body.user, req.body.post));
+  res.json({
+  success:true
+});
 });
 
 /**
