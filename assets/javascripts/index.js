@@ -83,7 +83,7 @@ function containsURL(str) {
     return !!pattern.test(str);
 };
 
-function createOgpElementFor(li, url) {
+function createOgpElement(li, url) {
     // サーバへ送りたいデータ
     const data = { url: url};
     // FetchAPIのオプション準備
