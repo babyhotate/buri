@@ -113,13 +113,13 @@ app.post("/api/ogp", (req, res) => {
     const jsdom = new JSDOM();
     const parser = new jsdom.window.DOMParser();
     const el = parser.parseFromString(text, "text/html")
-    const headEls = (el.head.children)
+    const headEls = el.head.children
 
     const ogp = {}
     Array.from(headEls).map(v => {
         const prop = v.getAttribute('property')
         if (!prop) return;
-        
+
         switch (prop) {
           case 'og:title':
             ogp.title = v.getAttribute("content");
