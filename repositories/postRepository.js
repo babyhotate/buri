@@ -30,11 +30,6 @@ class PostRepository {
 
   // @params index {Number}
   static async update(connection, id, message) {
-    await connection.query(`
-      UPDATE ${this.tableName}
-        SET message = "${message}"
-        WHERE id = ${id}
-    `);
     await connection.execute(
       `UPDATE ${this.tableName} SET message = ? WHERE id = ?`,
       [message, id],
