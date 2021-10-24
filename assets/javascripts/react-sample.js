@@ -61,19 +61,23 @@ class Posts extends React.Component {
 class Input extends React.Component {
   constructor(props) {
     super(props);
-    // TODO ユーザ一覧取得APIを実行してthis.state.usersに設定する（仮実装。IF決まり次第合わせる。）
-    // fetch('http://localhost:3000/api/users')
-    //   .then(response => response.json())
-    //   .then(data => {
-    //     this.setState({users: data.users});
-    //   })
-    //   .catch(error => console.log(error));
+    // 全ユーザ情報リスト取得APIを実行してthis.state.usersに設定する
+    fetch('http://localhost:3000/api/users')
+      .then(response => response.json())
+      .then(data => {
+        this.setState({users: data.users});
+      })
+      .catch(error => console.log(error));
 
-    this.state = { 
-      users: [{id: 1, displayName: 'tanaka'}, {id: 2, displayName: 'suzuki'}], //仮データ
+    // this.state = { 
+    //   users: [{id: 1, displayName: 'tanaka'}, {id: 2, displayName: 'suzuki'}], //仮データ
+    //   inputUserId: '',
+    //   inputValue: ''
+    // };
+    this.setState({
       inputUserId: '',
       inputValue: ''
-    };
+    });
   }
 
   handleUserChange = (e) => {
@@ -104,7 +108,7 @@ class Input extends React.Component {
   render() {
     return <div>
               <select name="user" id="user-select" onChange={this.handleUserChange}>
-                {this.state.users.map(user => <option key={user.id} value={user.id}>{user.displayName}</option>)}
+                {this.state.users.map(user => <option key={user.id} value={user.user_id}>{user.displayName}</option>)}
               </select>
               <input
                 type="text"
