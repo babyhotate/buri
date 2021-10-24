@@ -80,7 +80,7 @@ app.post("/api/posts", async (req, res) => {
     });
     return;
   }
-  await PostRepository.create(connection, req.query.user, req.query.post);
+  await PostRepository.create(connection, req.body.user, req.body.post);
   res.json({
     success: true,
   });
@@ -116,6 +116,27 @@ app.get("/edit_post", async (req, res) => {
     req.query.edit_content
   );
   res.redirect("/");
+});
+
+/**
+ * ポストを編集するAPI
+ */
+ app.patch("/api/posts", async (req, res) => {
+  if (!(req.body.post_id && req.body.edit_content)) {
+    res.status(400);
+    res.json({
+      success: false,
+    });
+    return;
+  }
+  await PostRepository.update(
+    connection,
+    req.body.post_id,
+    req.body.edit_content
+  );
+  res.json({
+    success: true,
+  });
 });
 
 /**
