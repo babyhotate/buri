@@ -79,7 +79,7 @@ app.post("/api/posts", async (req, res) => {
     });
     return;
   }
-  await PostRepository.create(connection, req.query.user, req.query.post);
+  await PostRepository.create(connection, req.body.user, req.body.post);
   res.json({
     success: true,
   });
@@ -95,6 +95,16 @@ app.get("/delete_post", async (req, res) => {
 });
 
 /**
+ * ポストを削除するAPI
+ */
+ app.delete("/api/posts/:id", async (req, res) => {
+  await PostRepository.delete(connection, req.params.id);
+  res.json({
+    success: true,
+  });
+});
+
+/**
  * ポストを編集する
  * e.g. /edit_post?post_id=1&edit_content=buri2
  */
@@ -105,6 +115,37 @@ app.get("/edit_post", async (req, res) => {
     req.query.edit_content
   );
   res.redirect("/");
+});
+
+/**
+ * ポストを編集するAPI
+ */
+ app.patch("/api/posts", async (req, res) => {
+  if (!(req.body.post_id && req.body.edit_content)) {
+    res.status(400);
+    res.json({
+      success: false,
+    });
+    return;
+  }
+  await PostRepository.update(
+    connection,
+    req.body.post_id,
+    req.body.edit_content
+  );
+  res.json({
+    success: true,
+  });
+});
+
+/**
+ * 全ユーザ情報リストを返す
+ */
+ app.get('/api/users', async (req, res) => {
+  const users = await UserRepository.getAll(connection);
+  res.json({
+    users: users
+  });
 });
 
 app.get("/kuji", (req, res) => {
