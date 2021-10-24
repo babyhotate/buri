@@ -11,7 +11,6 @@ const app = express();
 app.use(express.json());
 app.engine("handlebars", handlebars());
 app.set("view engine", "handlebars");
-const port = 3000;
 
 const DATA_DIR_PATH = "data";
 
@@ -123,6 +122,4 @@ app.get("/kuji", (req, res) => {
 
 app.use(express.static("assets"));
 
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
-});
+module.exports = app;
