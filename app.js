@@ -80,7 +80,7 @@ app.post("/api/posts", async (req, res) => {
     });
     return;
   }
-  await PostRepository.create(connection, req.query.user, req.query.post);
+  await PostRepository.create(connection, req.body.user, req.body.post);
   res.json({
     success: true,
   });
