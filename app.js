@@ -108,6 +108,16 @@ app.get("/edit_post", async (req, res) => {
   res.redirect("/");
 });
 
+/**
+ * 全ユーザ情報リストを返す
+ */
+ app.get('/api/users', async (req, res) => {
+  const users = await UserRepository.getAll(connection);
+  res.json({
+    users: users
+  });
+});
+
 app.get("/kuji", (req, res) => {
   let box = ["shellzu 🍣", "nakanoh 👤", "inukawaii 🐶", "aksh-t 🫀"];
   const result_list = [];
