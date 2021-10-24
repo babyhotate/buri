@@ -96,6 +96,16 @@ app.get("/delete_post", async (req, res) => {
 });
 
 /**
+ * ポストを削除するAPI
+ */
+ app.delete("/api/posts/:id", async (req, res) => {
+  await PostRepository.delete(connection, req.params.id);
+  res.json({
+    success: true,
+  });
+});
+
+/**
  * ポストを編集する
  * e.g. /edit_post?post_id=1&edit_content=buri2
  */
