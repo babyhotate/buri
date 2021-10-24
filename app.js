@@ -109,6 +109,27 @@ app.get("/edit_post", async (req, res) => {
 });
 
 /**
+ * ポストを編集するAPI
+ */
+ app.patch("/api/posts", async (req, res) => {
+  if (!(req.body.post_id && req.body.edit_content)) {
+    res.status(400);
+    res.json({
+      success: false,
+    });
+    return;
+  }
+  await PostRepository.update(
+    connection,
+    req.body.post_id,
+    req.body.edit_content
+  );
+  res.json({
+    success: true,
+  });
+});
+
+/**
  * 全ユーザ情報リストを返す
  */
  app.get('/api/users', async (req, res) => {
