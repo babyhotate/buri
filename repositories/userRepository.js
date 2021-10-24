@@ -25,6 +25,11 @@ class UserRepository {
   }
 
   static async getByUserIds(connection, userIds) {
+    if (userIds.length === 0) {
+      // 空配列を渡すと空のIN句が生成されて SQL syntax error が発生する
+      throw new Error("userIds には空配列を指定できません");
+    }
+
     const [rows] = await connection.query(
       `SELECT * FROM ${this.tableName} WHERE user_id in (?)`,
       [userIds]
@@ -35,6 +40,11 @@ class UserRepository {
   }
 
   static async getByIds(connection, ids) {
+    if (ids.length === 0) {
+      // 空配列を渡すと空のIN句が生成されて SQL syntax error が発生する
+      throw new Error("ids には空配列を指定できません");
+    }
+
     const [rows] = await connection.query(
       `SELECT * FROM ${this.tableName} WHERE id in (?)`,
       [ids]

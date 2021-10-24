@@ -61,6 +61,10 @@ describe("#getByIds", () => {
     ]);
     expect(users).toEqual(expectUsers);
   });
+  test("空配列が指定された時に例外が発生すること", async () => {
+    const promise = UserRepository.getByIds(connection, []);
+    await expect(promise).rejects.toThrow('ids には空配列を指定できません');
+  });
 });
 
 describe("#getByUserIds", () => {
@@ -86,6 +90,10 @@ describe("#getByUserIds", () => {
     ]);
     expect(users).toEqual(expectUsers);
   });
+  test("空配列が指定された時に例外が発生すること", async () => {
+    const promise = UserRepository.getByUserIds(connection, []);
+    await expect(promise).rejects.toThrow('userIds には空配列を指定できません');
+  })
 });
 
 describe("#getAll", () => {
