@@ -2,7 +2,7 @@
   "name": "buri",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "server.js",
   "scripts": {
     "test": "jest",
     "start": "nodemon"
@@ -24,6 +24,10 @@
     "nodemon": "^2.0.7"
   },
   "devDependencies": {
-    "jest": "^26.6.3"
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "jest": "^26.6.3",
+    "superagent": "^6.1.0",
+    "supertest": "^6.1.6"
   }
 }

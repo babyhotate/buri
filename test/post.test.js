@@ -1,13 +1,9 @@
-
-const { Post } = require('../models/post');
+const { Post } = require("../models/post");
 
 test("Postのコンストラクタ", () => {
-    const userId = "user1";
-    const message = "hoge";
-    const postId = "1";
-    const post = new Post(userId, message, postId);
-    expect(post).toBeInstanceOf(Post);
-    expect(post.userId).toBe("user1");
-    expect(post.message).toBe("hoge");
-    expect(post.id).toBe("1");
+  const post = new Post({ userId: "user1", message: "hoge", id: 1 });
+  expect(post).toBeInstanceOf(Post);
+  expect(post.userId).toBe("user1");
+  expect(post.message).toBe("hoge");
+  expect(post.id).toBe(1);
 });
