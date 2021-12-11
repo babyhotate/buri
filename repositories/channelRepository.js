@@ -10,7 +10,7 @@ class ChannelRepository {
     });
   }
 
-  static async getAll(connection) {
+  static async findAll(connection) {
     const [rows] = await connection.query(
       `SELECT * FROM ${this.tableName}`
     );

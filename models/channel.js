@@ -1,8 +1,10 @@
 class Channel {
-  name
+  id;
+  name;
 
-  constructor(name) {
-    this.name = name
+  constructor({ name, id }) {
+    this.name = name;
+    this.id = id;
   }
 }
 
