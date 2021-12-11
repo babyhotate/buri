@@ -23,3 +23,15 @@ CREATE TABLE `channels` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- CHANNEL_MAPPING
+CREATE TABLE `channel_mappings` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `channel_id` int unsigned NOT NULL,
+  `user_id` int unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `channel_mappings_ibfk_1` (`channel_id`),
+  KEY `channel_mappings_ibfk_2` (`user_id`),
+  CONSTRAINT `channel_mappings_ibfk_1` FOREIGN KEY (`channel_id`) REFERENCES `channels` (`id`),
+  CONSTRAINT `channel_mappings_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
