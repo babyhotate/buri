@@ -1,4 +1,4 @@
-class Channel_mapping {
+class ChannelMapping {
     id;
     channel_id;
     user_id;
@@ -12,4 +12,4 @@ class Channel_mapping {
     }
   }
   
-  module.exports.Channel_mapping = Channel_mapping;
+  module.exports.ChannelMapping = ChannelMapping;

@@ -2,7 +2,7 @@ const mysql = require("mysql2/promise");
 
 const { dbConfig } = require("../config.js");
 
-const { Channel_mappingRepository } = require("../repositories/channel_mappingRepository");
+const { ChannelMappingRepository } = require("../repositories/channelMappingRepository");
 
 let connection;
 
@@ -47,19 +47,19 @@ afterAll(async () => {
   await connection.rollback();
   await connection.end();
   // connectionが切れるまで少し待つ必要があるみたい
-  await new Promise((resolve) => setTimeout(resolve, 10));
+  await new Promise((resolve) => setTimeout(resolve, 20));
 });
 
 describe("#findAll", () => {
-  test("channel_mapping全件が取得できる", async () => {
-    const Channel_mappings = await Channel_mappingRepository.findAll(connection);
-    expect(Channel_mappings.length).toBe(2);
-    expect(Channel_mappings[0].id).toBe(1);
-    expect(Channel_mappings[0].channel_id).toBe(1);
-    expect(Channel_mappings[0].user_id).toBe(1);
-    expect(Channel_mappings[1].id).toBe(2);
-    expect(Channel_mappings[1].channel_id).toBe(2);
-    expect(Channel_mappings[1].user_id).toBe(2);
+  test("channelMapping全件が取得できる", async () => {
+    const channelMappings = await ChannelMappingRepository.findAll(connection);
+    expect(channelMappings.length).toBe(2);
+    expect(channelMappings[0].id).toBe(1);
+    expect(channelMappings[0].channel_id).toBe(1);
+    expect(channelMappings[0].user_id).toBe(1);
+    expect(channelMappings[1].id).toBe(2);
+    expect(channelMappings[1].channel_id).toBe(2);
+    expect(channelMappings[1].user_id).toBe(2);
 
   });
 });

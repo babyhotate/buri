@@ -26,7 +26,7 @@ afterAll(async () => {
   await connection.rollback();
   await connection.end();
   // connectionが切れるまで少し待つ必要があるみたい
-  await new Promise((resolve) => setTimeout(resolve, 10));
+  await new Promise((resolve) => setTimeout(resolve, 20));
 });
 
 describe("#findAll", () => {
