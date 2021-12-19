@@ -1,10 +1,10 @@
-const { Channel_mapping } = require('../models/channel_mapping');
+const { ChannelMapping } = require('../models/channelMapping');
 
-class Channel_mappingRepository {
+class ChannelMappingRepository {
   static tableName = "channel_mappings";
 
   static toModel(row) {
-    return new Channel_mapping({
+    return new ChannelMapping({
       id: row["id"],
       channel_id: row["channel_id"],
       user_id: row["user_id"]
@@ -16,9 +16,9 @@ class Channel_mappingRepository {
       `SELECT * FROM ${this.tableName}`
     );
 
-    const channel_mappings = rows.map(row => this.toModel(row));
-    return channel_mappings;
+    const channelMappings = rows.map(row => this.toModel(row));
+    return channelMappings;
   }
 }
 
-module.exports.Channel_mappingRepository = Channel_mappingRepository;
+module.exports.ChannelMappingRepository = ChannelMappingRepository;
