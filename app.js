@@ -38,10 +38,7 @@ app.get('/', async (req, res) => {
     postList: postList.map((post) => ({
       ...post,
       user: usersHasPosts.find((user) => user.id === post.userId),
-<<<<<<< HEAD
       emojis: emojis,
-=======
->>>>>>> origin/master
     })),
     users: users,
   });
