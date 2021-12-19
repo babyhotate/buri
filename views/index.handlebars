@@ -5,11 +5,11 @@
       {{this.user.displayName}}
       <form action="/edit_post" method="get" style="display: inline">
         <input type="text" name="edit_content" value="{{this.message}}" />
-        <input type="hidden" value={{@index}} name="post_id" />
+        <input type="hidden" value={{this.id}} name="post_id" />
         <input type="submit" value="編集" />
       </form>
       <form action="/delete_post" method="get" style="display: inline">
-        <input type="hidden" value={{@index}} id="post" name="post_id" />
+        <input type="hidden" value={{this.id}} id="post" name="post_id" />
         <input type="submit" value="削除" />
       </form>
       <select name="emoji" id="emoji-select">
