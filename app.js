@@ -4,6 +4,7 @@ const { dbConfig } = require("./config.js");
 const { Post } = require("./models/post");
 const { UserRepository } = require("./repositories/userRepository");
 const { PostRepository } = require("./repositories/postRepository");
+const { EmojiRepository } = require('./repositories/emojiRepository');
 
 const handlebars = require("express-handlebars");
 const express = require("express");
@@ -31,11 +32,13 @@ app.get('/', async (req, res) => {
   const usersHasPosts = userIds.length > 0 ? await UserRepository.getByIds(connection, userIds) : [];
 
   const users = await UserRepository.getAll(connection);
+  const emojis = await EmojiRepository.getAll(connection);
 
   res.render("index", {
     postList: postList.map((post) => ({
       ...post,
       user: usersHasPosts.find((user) => user.id === post.userId),
+      emojis: emojis,
     })),
     users: users,
   });
