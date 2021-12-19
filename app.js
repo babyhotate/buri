@@ -156,9 +156,7 @@ app.get("/edit_post", async (req, res) => {
  app.get('/api/channels', async (req, res) => {
   const channelList = await ChannelRepository.findAll(connection);
   const channelNames = channelList.map(channel => channel.name);
-
-  const usersHasPosts = await UserRepository.getByIds(connection, channelNames);
-
+  
   res.json({
     channelNames: channelNames
   });
