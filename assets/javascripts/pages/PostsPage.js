@@ -84,34 +84,36 @@ class Posts extends React.Component {
     };
 
     render() {
-        return this.props.posts.map((post, i) => {
-            return (
-                <ul>
-                    <li id={post.id} key={post.id}>
-                        {post.user.displayName}
-                        <input
-                            type="text"
-                            name="edit_content"
-                            defaultValue={post.message}
-                            onChange={this.handlePostMessageChange}
-                            data-post-id={String(post.id)}
-                        />
-                        <input
-                            type="button"
-                            value="編集"
-                            onClick={this.handleEditClick}
-                            data-post-id={String(post.id)}
-                        />
-                        <input
-                            type="button"
-                            value="削除"
-                            onClick={this.handleDeleteClick}
-                            data-post-id={String(post.id)}
-                        />
-                    </li>
-                </ul>
-            );
-        });
+        return (
+            <ul>
+                {this.props.posts.map((post, i) => {
+                    return (
+                        <li id={post.id} key={post.id}>
+                            {post.user.displayName}
+                            <input
+                                type="text"
+                                name="edit_content"
+                                defaultValue={post.message}
+                                onChange={this.handlePostMessageChange}
+                                data-post-id={String(post.id)}
+                            />
+                            <input
+                                type="button"
+                                value="編集"
+                                onClick={this.handleEditClick}
+                                data-post-id={String(post.id)}
+                            />
+                            <input
+                                type="button"
+                                value="削除"
+                                onClick={this.handleDeleteClick}
+                                data-post-id={String(post.id)}
+                            />
+                        </li>
+                    );
+                })}
+            </ul>
+        );
     }
 }
 
