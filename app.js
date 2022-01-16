@@ -4,6 +4,7 @@ const { dbConfig } = require("./config.js");
 const { Post } = require("./models/post");
 const { UserRepository } = require("./repositories/userRepository");
 const { PostRepository } = require("./repositories/postRepository");
+const { ChannelRepository } = require("./repositories/channelRepository");
 
 const handlebars = require("express-handlebars");
 const express = require("express");
@@ -146,6 +147,18 @@ app.get("/edit_post", async (req, res) => {
   const users = await UserRepository.getAll(connection);
   res.json({
     users: users
+  });
+});
+
+/**
+ * 全チャンネル一覧をJSONで返す
+ */
+ app.get('/api/channels', async (req, res) => {
+  const channelList = await ChannelRepository.findAll(connection);
+  const channelNames = channelList.map(channel => channel.name);
+  
+  res.json({
+    channelNames: channelNames
   });
 });
 
