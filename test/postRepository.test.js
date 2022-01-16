@@ -14,7 +14,7 @@ beforeAll(async () => {
 
 beforeEach(async () => {
   await connection.query(`DELETE FROM posts`);
-  await connection.query(`DELETE FROM channel_mappings`);
+    await connection.query(`DELETE FROM channel_user_mappings`);
   await connection.query(`DELETE FROM users`);
   await connection.query(`
     INSERT INTO users (id, user_id, display_name) 

@@ -2,7 +2,7 @@ const mysql = require("mysql2/promise");
 
 const { dbConfig } = require("../config.js");
 
-const { ChannelMappingRepository } = require("../repositories/channelMappingRepository");
+const { ChannelUserMappingRepository } = require("../repositories/channelUserMappingRepository");
 
 let connection;
 
@@ -14,7 +14,7 @@ beforeAll(async () => {
 
 beforeEach(async () => {
   await connection.query(`DELETE FROM posts`);
-  await connection.query(`DELETE FROM channel_mappings`);
+  await connection.query(`DELETE FROM channel_user_mappings`);
   await connection.query(`DELETE FROM users`);
   await connection.query(`DELETE FROM channels`);
   await connection.query(`
@@ -36,7 +36,7 @@ beforeEach(async () => {
       (2, 'hotate')
     `);
   await connection.query(`
-    INSERT INTO channel_mappings (id, channel_id, user_id) 
+    INSERT INTO channel_user_mappings (id, channel_id, user_id) 
       VALUES 
       (1, 1, 1),
       (2, 2, 2)
@@ -51,15 +51,15 @@ afterAll(async () => {
 });
 
 describe("#findAll", () => {
-  test("channelMapping全件が取得できる", async () => {
-    const channelMappings = await ChannelMappingRepository.findAll(connection);
-    expect(channelMappings.length).toBe(2);
-    expect(channelMappings[0].id).toBe(1);
-    expect(channelMappings[0].channel_id).toBe(1);
-    expect(channelMappings[0].user_id).toBe(1);
-    expect(channelMappings[1].id).toBe(2);
-    expect(channelMappings[1].channel_id).toBe(2);
-    expect(channelMappings[1].user_id).toBe(2);
+  test("channelUserMapping全件が取得できる", async () => {
+    const channelUserMappings = await ChannelUserMappingRepository.findAll(connection);
+    expect(channelUserMappings.length).toBe(2);
+    expect(channelUserMappings[0].id).toBe(1);
+    expect(channelUserMappings[0].channel_id).toBe(1);
+    expect(channelUserMappings[0].user_id).toBe(1);
+    expect(channelUserMappings[1].id).toBe(2);
+    expect(channelUserMappings[1].channel_id).toBe(2);
+    expect(channelUserMappings[1].user_id).toBe(2);
 
   });
 });
