@@ -47,7 +47,7 @@ function apple(posts) {
 
         // URLが含まれていたらOGP取得して要素追加
         if(containsURL(post['message'])) {
-            createOgpElementFor(li, post['message']);
+            addOgpElement(li, post['message']);
         }
         
         const formForDelete = document.createElement('form');
