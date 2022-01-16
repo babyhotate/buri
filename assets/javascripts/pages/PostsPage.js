@@ -1,5 +1,7 @@
 'use strict';
 
+const apiServerUrl = "http://localhost:3000"
+
 /*
  * 投稿一覧画面
  */
@@ -11,7 +13,7 @@ class PostsPage extends React.Component {
     }
 
     updatePosts = () => {
-        fetch('http://localhost:3000/api/posts')
+        fetch(`${apiServerUrl}/api/posts`)
             .then((response) => response.json())
             .then((data) => {
                 this.setState({ posts: data.posts });
@@ -56,7 +58,7 @@ class Posts extends React.Component {
     handleEditClick = (e) => {
         // 投稿更新APIを実行する
         const postId = Number(e.currentTarget.getAttribute('data-post-id'));
-        fetch('http://localhost:3000/api/posts', {
+        fetch(`${apiServerUrl}/api/posts`, {
             method: 'PATCH',
             headers: { 'Content-type': 'application/json' },
             body: JSON.stringify({
@@ -73,7 +75,7 @@ class Posts extends React.Component {
     handleDeleteClick = (e) => {
         // 投稿削除APIを実行する
         const postId = e.currentTarget.getAttribute('data-post-id');
-        fetch(`http://localhost:3000/api/posts/${postId}`, {
+        fetch(`${apiServerUrl}/api/posts/${postId}`, {
             method: 'DELETE',
         })
             .then((response) => {
@@ -133,7 +135,7 @@ class Form extends React.Component {
 
     getUsers = () => {
         // 全ユーザ情報リスト取得APIを実行してthis.state.usersに設定する
-        fetch('http://localhost:3000/api/users')
+        fetch(`${apiServerUrl}/api/users`)
             .then((response) => response.json())
             .then((data) => {
                 this.setState({ users: data.users });
@@ -153,7 +155,7 @@ class Form extends React.Component {
 
     handleSend = (e) => {
         // 投稿追加APIを実行する
-        fetch('http://localhost:3000/api/posts', {
+        fetch(`${apiServerUrl}/api/posts`, {
             method: 'POST',
             headers: { 'Content-type': 'application/json' },
             body: JSON.stringify({
