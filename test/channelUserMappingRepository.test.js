@@ -36,7 +36,7 @@ beforeEach(async () => {
       (2, 'hotate')
     `);
   await connection.query(`
-    INSERT INTO channel_user_mappings (id, channel_id, user_id) 
+    INSERT INTO channel_user_mappings (id, channelId, userId) 
       VALUES 
       (1, 1, 1),
       (2, 2, 2)
@@ -55,11 +55,11 @@ describe("#findAll", () => {
     const channelUserMappings = await ChannelUserMappingRepository.findAll(connection);
     expect(channelUserMappings.length).toBe(2);
     expect(channelUserMappings[0].id).toBe(1);
-    expect(channelUserMappings[0].channel_id).toBe(1);
-    expect(channelUserMappings[0].user_id).toBe(1);
+    expect(channelUserMappings[0].channelId).toBe(1);
+    expect(channelUserMappings[0].userId).toBe(1);
     expect(channelUserMappings[1].id).toBe(2);
-    expect(channelUserMappings[1].channel_id).toBe(2);
-    expect(channelUserMappings[1].user_id).toBe(2);
+    expect(channelUserMappings[1].channelId).toBe(2);
+    expect(channelUserMappings[1].userId).toBe(2);
 
   });
 });

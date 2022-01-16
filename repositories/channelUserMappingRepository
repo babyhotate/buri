@@ -6,8 +6,8 @@ class ChannelUserMappingRepository {
   static toModel(row) {
     return new ChannelUserMapping({
       id: row["id"],
-      channel_id: row["channel_id"],
-      user_id: row["user_id"]
+      channelId: row["channelId"],
+      userId: row["userId"]
     });
   }
 

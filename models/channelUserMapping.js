@@ -1,12 +1,12 @@
 class ChannelUserMapping {
     id;
-    channel_id;
-    user_id;
+    channelId;
+    userId;
 
   
-    constructor({ channel_id, user_id, id }) {
-      this.channel_id = channel_id;
-      this.user_id = user_id;
+    constructor({ channelId, userId, id }) {
+      this.channelId = channelId;
+      this.userId = userId;
       this.id = id;
 
     }
