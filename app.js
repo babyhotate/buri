@@ -22,7 +22,7 @@ let connection;
 })();
 
 /**
- * ポストの一覧を表示する(React版)
+ * ポストの一覧を表示する
  */
  app.get('/posts', async (req, res) => {
   res.render("posts");
