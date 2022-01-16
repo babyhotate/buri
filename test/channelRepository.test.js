@@ -13,6 +13,7 @@ beforeAll(async () => {
 })
 
 beforeEach(async () => {
+  await connection.query(`DELETE FROM channel_mappings`);
   await connection.query(`DELETE FROM channels`);
   await connection.query(`
     INSERT INTO channels (id, name) 

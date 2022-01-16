@@ -11,6 +11,7 @@ beforeAll(async () => {
   connection = await mysql.createConnection(dbConfig);
   await connection.beginTransaction();
   await connection.query(`DELETE FROM posts`);
+  await connection.query(`DELETE FROM channel_mappings`);
   await connection.query(`DELETE FROM users`);
 
   await connection.query(`
