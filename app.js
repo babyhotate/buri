@@ -116,7 +116,6 @@ app.get("/delete_post", async (req, res) => {
  * e.g. /edit_post?post_id=1&edit_content=buri2
  */
 app.get("/edit_post", async (req, res) => {
-  console.log(req.body)
   await PostRepository.update(
     connection,
     req.query.post_id,
