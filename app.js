@@ -7,8 +7,16 @@ const { PostRepository } = require("./repositories/postRepository");
 
 const handlebars = require("express-handlebars");
 const express = require("express");
+const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
+
+
 const app = express();
 app.use(express.json());
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
+app.use(cookieParser());
 app.engine("handlebars", handlebars());
 app.set("view engine", "handlebars");
 
@@ -22,9 +30,34 @@ let connection;
 })();
 
 /**
+ * ログイン画面を表示する
+ */
+app.get('/login', async (req, res) => {
+  res.render("login");
+});
+
+/**
+ * ログイン画面を表示する
+ */
+app.post('/login', async (req, res) => {
+  // 本当はここで認証
+  res.cookie("userId", req.body.userId);
+  res.redirect("/");
+});
+
+/**
+ * ログアウトする
+ */
+app.get('/logout', async (req, res) => {
+  res.clearCookie("userId");
+  res.redirect("/login");
+});
+
+/**
  * ポストの一覧を表示する
  */
 app.get('/', async (req, res) => {
+  console.log('Cookies: ', req.cookies);
   const postList = await PostRepository.findAll(connection);
   const userIds = postList.map(post => post.userId);
 
@@ -33,6 +66,7 @@ app.get('/', async (req, res) => {
   const users = await UserRepository.getAll(connection);
 
   res.render("index", {
+    userId: req.cookies.userId,
     postList: postList.map((post) => ({
       ...post,
       user: usersHasPosts.find((user) => user.id === post.userId),
@@ -97,7 +131,7 @@ app.get("/delete_post", async (req, res) => {
 /**
  * ポストを削除するAPI
  */
- app.delete("/api/posts/:id", async (req, res) => {
+app.delete("/api/posts/:id", async (req, res) => {
   await PostRepository.delete(connection, req.params.id);
   res.json({
     success: true,
@@ -120,7 +154,7 @@ app.get("/edit_post", async (req, res) => {
 /**
  * ポストを編集するAPI
  */
- app.patch("/api/posts", async (req, res) => {
+app.patch("/api/posts", async (req, res) => {
   if (!(req.body.post_id && req.body.edit_content)) {
     res.status(400);
     res.json({
@@ -141,7 +175,7 @@ app.get("/edit_post", async (req, res) => {
 /**
  * 全ユーザ情報リストを返す
  */
- app.get('/api/users', async (req, res) => {
+app.get('/api/users', async (req, res) => {
   const users = await UserRepository.getAll(connection);
   res.json({
     users: users
