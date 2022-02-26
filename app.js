@@ -40,7 +40,17 @@ app.get('/login', async (req, res) => {
  * ログインを実行する
  */
 app.post('/login', async (req, res) => {
-  // 本当はここで認証
+  // 認証
+  // userIdをキーにUser情報を取得する
+  const user = await UserRepository.getByUserId(connection, req.body.userId);
+
+  // User情報が取得できなかったら、または、
+  // 取得したUser情報のpasswordと入力されたpasswordが一致しなかったらログイン画面に遷移する
+  if (!user || user.password !== req.body.password) {
+    res.redirect("/login");
+    return;
+  }
+  // 一致したらホーム画面に遷移する
   res.cookie("userId", req.body.userId);
   res.redirect("/");
 });
