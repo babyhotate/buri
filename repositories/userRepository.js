@@ -9,6 +9,7 @@ class UserRepository {
       id: row["id"],
       userId: row["user_id"],
       displayName: row["display_name"],
+      password: row["password"],
     });
   }
 
