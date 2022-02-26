@@ -37,7 +37,7 @@ app.get('/login', async (req, res) => {
 });
 
 /**
- * ログイン画面を表示する
+ * ログインを実行する
  */
 app.post('/login', async (req, res) => {
   // 本当はここで認証
