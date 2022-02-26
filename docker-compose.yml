@@ -2,8 +2,7 @@ version: "3"
 
 services:
   db:
-    platform: linux/x86_64 
-    image: mysql:8.0.26
+    build: ./docker
     ports:
       - "3306:3306"
     volumes:

@@ -5,7 +5,10 @@
   "main": "server.js",
   "scripts": {
     "test": "jest",
-    "start": "nodemon"
+    "start": "nodemon",
+    "schema:export": "docker exec buri_db_1 mysqldef -uhotate -pbaby buri --export > ./data/schema.sql",
+    "schema:apply": " cat ./data/schema.sql | docker exec -i buri_db_1 mysqldef -uhotate -pbaby buri --skip-drop",
+    "schema:apply:force-clean": " cat ./data/schema.sql | docker exec -i buri_db_1 mysqldef -uhotate -pbaby buri"
   },
   "repository": {
     "type": "git",
