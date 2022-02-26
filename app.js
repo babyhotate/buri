@@ -47,7 +47,8 @@ app.post('/login', async (req, res) => {
   // User情報が取得できなかったら、または、
   // 取得したUser情報のpasswordと入力されたpasswordが一致しなかったらログイン画面に遷移する
   if (!user || user.password !== req.body.password) {
-    res.redirect("/login");
+    res.status(401);
+    res.render("login");
     return;
   }
   // 一致したらホーム画面に遷移する
