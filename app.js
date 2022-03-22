@@ -67,6 +67,13 @@ app.get('/logout', async (req, res) => {
 /**
  * ポストの一覧を表示する
  */
+ app.get('/posts', async (req, res) => {
+  res.render("posts");
+});
+
+/**
+ * ポストの一覧を表示する
+ */
 app.get('/', async (req, res) => {
   console.log('Cookies: ', req.cookies);
   const postList = await PostRepository.findAll(connection);
